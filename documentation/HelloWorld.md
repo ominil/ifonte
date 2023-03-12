@@ -47,6 +47,17 @@ Moreover, we have a set of status Code:
 
 To gain more knowledge on HTTP status code and have a complete list, read the [List of HTTP status codes](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes) Wikipedia page.
 
+
+## N Tier Architecture
+
+- Client
+- API Layer
+- Business Layer
+- DAO Layer
+- Database
+
+TODO: Diagram
+
 ## Dependencies
 
 
