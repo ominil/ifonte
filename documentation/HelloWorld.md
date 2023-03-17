@@ -76,3 +76,35 @@ Each Spring Boot application contains an embedded Tomcat web server
 `application.yaml` file contains all the confifuration of the web server
 
 TODO: application type: servlet vs reactive
+
+
+### Docker
+
+#### Install Docker
+
+#### Docker Compose
+
+### Postgres
+
+##### Setup Database
+
+enter the database: `docker exec -it postgres bash`
+
+enter the interactive shell client: `psql -U username`
+
+create database: `CREATE DATABASE database_name`
+
+##### Install JDBC PostgresSQL drivers
+
+```pom.xml
+<dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+    <scope>runtime</scope>
+</dependency>
+
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+```
