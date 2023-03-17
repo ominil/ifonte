@@ -14,12 +14,12 @@ public class EmployerController {
 
     private final EmployerService employerService;
 
-    @GetMapping("api/v1/employee")
-    public List<Employer> getEmployee() {
+    @GetMapping("api/v1/employer")
+    public List<Employer> getEmployers() {
         return employerService.getAllEmployee();
     }
 
-    @GetMapping("api/v1/employee/{id}")
+    @GetMapping("api/v1/employer/{id}")
     public Employer getEmployerById(@PathVariable("id") Integer id) {
         return employerService.getEmployer(id);
     }

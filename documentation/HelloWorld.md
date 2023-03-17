@@ -94,6 +94,26 @@ enter the interactive shell client: `psql -U username`
 
 create database: `CREATE DATABASE database_name`
 
+select database: `\c database_name`
+
+show relations: `\d` or `\d table_name`
+
+
+#### Spring Data JPA
+
+- `findAll()`: returns all records of an entity
+- `findById(id)`: returns a record by its primary key
+- `save(entity)`: saves a new record or updates an existing record
+- `deleteById(id)`: deletes a record by its primary key
+- `existsById(id)`: checks if a record exists by its primary key
+- `count()`: returns the count of records for an entity
+- `findAll(Sort sort)`: returns all records of an entity, sorted by the specified attribute
+- `findAll(Pageable pageable)`: returns a page of records, according to the specified paging and sorting options
+- `findBy[Attribute](value)`: returns a list of records by the specified attribute value
+- `findFirstBy[Attribute](value)`: returns the first record found by the specified attribute value
+- `findTopBy[Attribute](value)`: returns the first record found by the specified attribute value
+- `findBy[Attribute]Containing(value)`: returns a list of records where the specified attribute contains the specified value
+
 ##### Install JDBC PostgresSQL drivers
 
 ```pom.xml
