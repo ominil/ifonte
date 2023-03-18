@@ -18,6 +18,31 @@ public class EmployerJPADataAccessService implements EmployerDao {
 
     @Override
     public Optional<Employer> getEmployerById(Integer employerId) {
-        return Optional.empty();
+        return employerRepository.findById(employerId);
+    }
+
+    @Override
+    public void insertEmployer(Employer employer) {
+        employerRepository.save(employer);
+    }
+
+    @Override
+    public void deleteEmployerById(Integer id) {
+        employerRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean existPersonWithEmail(String email) {
+        return employerRepository.existsEmployerByEmail(email);
+    }
+
+    @Override
+    public boolean existEmployerById(Integer id) {
+        return employerRepository.existsById(id);
+    }
+
+    @Override
+    public void updateEmployer(Employer employer) {
+        employerRepository.save(employer);
     }
 }
