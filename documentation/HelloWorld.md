@@ -96,7 +96,7 @@ create database: `CREATE DATABASE database_name`
 
 select database: `\c database_name`
 
-show relations: `\d` or `\d table_name`
+show relations (schemas): `\d`, `\dn` or `\d table_name`
 
 
 #### Spring Data JPA
@@ -129,7 +129,11 @@ show relations: `\d` or `\d table_name`
 </dependency>
 ```
 
+#### Flyway (Database migration)
 
+Manage database relations. It used to version and automate database deployments.
+
+- Documentation: [https://documentation.red-gate.com/fd/flyway-cli-and-api-183306238.html](https://documentation.red-gate.com/fd/flyway-cli-and-api-183306238.html)
 ### Documentation
 
 Spring Openapi (swagger): [http://localhost:8080/swagger-ui/index.html#/](http://localhost:8080/swagger-ui/index.html#/)

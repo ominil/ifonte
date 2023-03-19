@@ -2,6 +2,8 @@ package ch.ti.ifonte;
 
 import ch.ti.ifonte.employer.Employer;
 import ch.ti.ifonte.employer.EmployerRepository;
+import com.github.javafaker.Faker;
+import com.github.javafaker.Name;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,10 +21,16 @@ public class IFonteApplication {
     @Bean
     CommandLineRunner runner(EmployerRepository employerRepository) {
         return args -> {
-                    Employer luca = new Employer("Luca","luca@gmail.com");
-                    Employer andrea = new Employer("Andrea","andrea@gmail.com");
+            Faker faker = new Faker();
+            Name name = faker.name();
+            String firstname = name.firstName();
+            String lastname = name.lastName();
+            Employer employer = new Employer(
+                    firstname + " " + lastname,
+                    firstname.toLowerCase() + "." + lastname.toLowerCase() + "@example.com"
+            );
 
-            List<Employer> employers = List.of(luca, andrea);
+            List<Employer> employers = List.of(employer);
             employerRepository.saveAll(employers);
         };
     }
