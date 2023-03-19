@@ -13,7 +13,7 @@ public class EmployerService {
 
     private final EmployerDao employerDao;
 
-    public EmployerService(@Qualifier("employer_jpa") EmployerDao employerDao) {
+    public EmployerService(@Qualifier("jdbc") EmployerDao employerDao) {
         this.employerDao = employerDao;
     }
     public List<Employer> getAllEmployee() {
