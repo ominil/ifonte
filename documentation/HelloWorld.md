@@ -128,3 +128,8 @@ show relations: `\d` or `\d table_name`
     <artifactId>spring-boot-starter-data-jpa</artifactId>
 </dependency>
 ```
+
+
+### Documentation
+
+Spring Openapi (swagger): [http://localhost:8080/swagger-ui/index.html#/](http://localhost:8080/swagger-ui/index.html#/)

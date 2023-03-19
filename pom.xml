@@ -44,6 +44,24 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+
+		<!--	DOCUMENTATION	-->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.0.4</version>
+		</dependency>
+
+		<!--
+			Add this dependency to mitigate the error:
+			"Unable to create a Configuration, because no Jakarta Bean Validation provider could be found.
+		 	Add a provider like Hibernate Validator (RI) to your classpath."
+		 	When using `springdoc-openapi-starter-webmvc-ui` for swagger documentation
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
