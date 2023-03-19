@@ -137,3 +137,14 @@ Manage database relations. It used to version and automate database deployments.
 ### Documentation
 
 Spring Openapi (swagger): [http://localhost:8080/swagger-ui/index.html#/](http://localhost:8080/swagger-ui/index.html#/)
+
+
+### Test
+
+#### Testcontainers
+
+Read documentation: [https://www.testcontainers.org/](https://www.testcontainers.org/)
+
+Library that supports Junit test and throwaway instances of common databases. 
+- Data access layer integration tests
+- application integration tests
