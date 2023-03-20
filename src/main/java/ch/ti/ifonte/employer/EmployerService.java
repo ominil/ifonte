@@ -21,7 +21,7 @@ public class EmployerService {
     }
 
     public Employer getEmployer(Integer employerId) {
-        return employerDao.getEmployerById(employerId).orElseThrow(
+        return employerDao.selectEmployerById(employerId).orElseThrow(
                 () -> new ResourceNotFoundException(
                         "Employer with id [%s] not found".formatted(employerId)
                 )

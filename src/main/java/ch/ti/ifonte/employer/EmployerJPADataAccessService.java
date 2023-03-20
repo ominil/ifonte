@@ -17,7 +17,7 @@ public class EmployerJPADataAccessService implements EmployerDao {
     }
 
     @Override
-    public Optional<Employer> getEmployerById(Integer employerId) {
+    public Optional<Employer> selectEmployerById(Integer employerId) {
         return employerRepository.findById(employerId);
     }
 

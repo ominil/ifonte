@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository("jdbc")
 @AllArgsConstructor
-public class EmployerJDBCDataAccesService implements EmployerDao {
+public class EmployerJDBCDataAccessService implements EmployerDao {
 
     private final JdbcTemplate jdbcTemplate;
     private final EmployerRowMapper employerRowMapper;
@@ -26,7 +26,7 @@ public class EmployerJDBCDataAccesService implements EmployerDao {
     }
 
     @Override
-    public Optional<Employer> getEmployerById(Integer employerId) {
+    public Optional<Employer> selectEmployerById(Integer employerId) {
 
         var sql = """
                    SELECT id, name, email

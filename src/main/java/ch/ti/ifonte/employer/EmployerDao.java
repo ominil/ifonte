@@ -6,7 +6,7 @@ import java.util.Optional;
 public interface EmployerDao {
 
     List<Employer> selectAllEmployers();
-    Optional<Employer> getEmployerById(Integer employerId);
+    Optional<Employer> selectEmployerById(Integer employerId);
     void insertEmployer(Employer employer);
 
     void deleteEmployerById(Integer id);
