@@ -20,7 +20,7 @@ public class EmployerController {
     @Operation(summary = "Get a list of all registered employers")
     @GetMapping
     public List<Employer> getEmployers() {
-        return employerService.getAllEmployee();
+        return employerService.getAllEmployers();
     }
 
     @Operation(summary = "Retrieve employer by id")

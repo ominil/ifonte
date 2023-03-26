@@ -16,7 +16,7 @@ public class EmployerService {
     public EmployerService(@Qualifier("jdbc") EmployerDao employerDao) {
         this.employerDao = employerDao;
     }
-    public List<Employer> getAllEmployee() {
+    public List<Employer> getAllEmployers() {
         return employerDao.selectAllEmployers();
     }
 
@@ -75,7 +75,7 @@ public class EmployerService {
                 );
             }
 
-            employer.setEmail(employerUpdateRequest.name());
+            employer.setEmail(employerUpdateRequest.email());
             changes = true;
         }
 
