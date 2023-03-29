@@ -30,6 +30,20 @@ services:
     depends_on:
       - db
 
+  ifonte-api:
+    container_name: ifonte-api
+    image: ifonte/ifonte-api
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ifonte
+    ports:
+      - "9080:8080"
+    networks:
+      - postgres
+    depends_on:
+      - db
+    restart: unless-stopped
+
+
 networks:
   postgres:
     driver: bridge
