@@ -1,4 +1,4 @@
-name: CI - Build Backend
+name: CI - Build Backend iFonte
 
 on:
   pull_request:
