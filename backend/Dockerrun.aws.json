@@ -1,0 +1,23 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "ifonte-api",
+      "image": "ifonte/ifonte-api:latest",
+      "essential": true,
+      "memory": 512,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 8080
+        }
+      ],
+      "environment": [
+        {
+          "name": "SPRING_DATASOURCE_URL",
+          "value": "jdbc:postgresql://awseb-e-nyjn3m9uub-stack-awsebrdsdatabase-psk5ir8zqzuq.cbkh5vcuw6hp.eu-north-1.rds.amazonaws.com:5432/ifonte"
+        }
+      ]
+    }
+  ]
+}
