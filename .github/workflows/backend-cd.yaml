@@ -10,8 +10,8 @@ on:
 
 jobs:
   deploy:
-    if: ${{ !contains('["github-actions"]', github.actor) }}
     runs-on: ubuntu-latest
+    if: ${{ !contains('["github-actions"]', github.actor) }}
     services:
       postgres:
         image: postgres:15.2
@@ -44,7 +44,7 @@ jobs:
           password: ${{secrets.DOCKERHUB_ACCESS_TOKEN}}
       - name: Set build number
         id: build-number
-        run: echo "BUILD_NUMBER=$(date '+%d.%m.%Y.%H.%M.%S')" >> $GITHUB_OUTPUT
+        run: echo "BUILD_NUMBER=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive  exec:exec)" >> $GITHUB_OUTPUT
       - name: Build Package Push with Maven
         run: mvn -ntp -B verify -Ddocker.image.tag=${{steps.build-number.outputs.BUILD_NUMBER}} jib:build
         env:
@@ -70,7 +70,7 @@ jobs:
       - name: Commit and push Dockerrun.aws.json
         run: |
           git config user.name github-actions
-          git config user.email github-action@github.com
+          git config user.email github-actions@github.com
           git add .
           git commit -m "Update Dockerrun.aws.json docker image with new tag ${{steps.build-number.outputs.BUILD_NUMBER}} #bot"
           git push
