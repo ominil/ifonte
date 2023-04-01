@@ -11,7 +11,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: ${{ !contains('["github-actions"]', github.actor) }}
+#    if: ${{ !contains('["github-actions"]', github.actor) }}
     services:
       postgres:
         image: postgres:15.2
