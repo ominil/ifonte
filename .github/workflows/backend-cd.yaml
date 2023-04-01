@@ -10,7 +10,7 @@ on:
 
 jobs:
   deploy:
-    if: ${{ !github.actor == 'github-actions') }}
+    if: github.actor != 'github-actions'
     runs-on: ubuntu-latest
     services:
       postgres:
