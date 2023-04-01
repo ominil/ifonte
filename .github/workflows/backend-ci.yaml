@@ -15,7 +15,7 @@ jobs:
         image: postgres:15.2
         env:
           POSTGRES_USER: omini
-          POSTGRES_PASSWORD: password
+          POSTGRES_PASSWORD: ${{secrets.POSTGRES_ACCESS_TOKEN}}
           POSTGRES_DB: ifonte
         ports:
           - 5432:5432

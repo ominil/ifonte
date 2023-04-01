@@ -4,7 +4,7 @@ services:
     image: postgres:15.2
     environment:
       POSTGRES_USER: omini
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: ${POSTGRES_ACCESS_TOKEN}
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
