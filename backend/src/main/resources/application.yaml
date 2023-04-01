@@ -7,7 +7,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/ifonte
     username: omini
-    password: password
+    password: ${POSTGRES_ACCESS_TOKEN}
   jpa:
     hibernate:
       ddl-auto: validate

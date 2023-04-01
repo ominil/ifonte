@@ -15,7 +15,7 @@ jobs:
         image: postgres:15.2
         env:
           POSTGRES_USER: omini
-          POSTGRES_PASSWORD: password
+          POSTGRES_PASSWORD: ${{secrets.POSTGRES_ACCESS_TOKEN}}
           POSTGRES_DB: ifonte
         ports:
           - 5432:5432
@@ -37,3 +37,5 @@ jobs:
           cache: 'maven'
       - name: Build and run Unit/Integration Tests with Maven
         run: mvn -ntp -B verify
+        env:
+          POSTGRES_ACCESS_TOKEN: ${{secrets.POSTGRES_ACCESS_TOKEN}}
