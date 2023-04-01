@@ -10,6 +10,7 @@ on:
 
 jobs:
   deploy:
+    if: ${{ !github.actor == 'github-actions') }}
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -65,11 +66,11 @@ jobs:
           version_label: ${{ steps.build-number.outputs.BUILD_NUMBER }}
           version_description: ${{ github.SHA }}
           region: ${{ secrets.EB_REGION }}
-          deployment_package: Dockerrun.aws.json
+          deployment_package: backend/Dockerrun.aws.json
       - name: Commit and push Dockerrun.aws.json
         run: |
           git config user.name github-actions
           git config user.email github-action@github.com
           git add .
-          git commit -m "Update Dockerrun.aws.json  docker image with new tag ${{steps.build-number.outputs.BUILD_NUMBER}}
+          git commit -m "Update Dockerrun.aws.json docker image with new tag ${{steps.build-number.outputs.BUILD_NUMBER}} #bot
           git push
