@@ -11,7 +11,7 @@ public class PingPongController {
 
     @GetMapping("/ping")
     public PingPong getPingPong() {
-        return new PingPong("Pong, it works");
+        return new PingPong("Pong, check slack messages");
     }
 
 }
