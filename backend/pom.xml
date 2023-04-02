@@ -141,6 +141,7 @@
 						</goals>
 						<configuration>
 							<arguments>
+								<!--suppress UnresolvedMavenProperty -->
 								<argument>--server.port=${tomcat.http.port}</argument>
 							</arguments>
 						</configuration>
@@ -180,6 +181,7 @@
 						<include>**/*IT.java</include>
 					</includes>
 					<systemPropertyVariables>
+						<!--suppress UnresolvedMavenProperty -->
 						<test.server.port>${tomcat.http.port}</test.server.port>
 					</systemPropertyVariables>
 				</configuration>
@@ -189,8 +191,11 @@
 				<artifactId>jib-maven-plugin</artifactId>
 				<version>3.3.1</version>
 				<configuration>
+					<container>
+						<mainClass>ch.ti.ifonte.IFonteApplication</mainClass>
+					</container>
 					<from>
-						<image>eclipse-temurin:17</image>
+						<image>eclipse-temurin:17@sha256:eaf8250ca78bc5394fe89189b4a9933ac45d2af9060113f0065886beb921e652</image>
 						<platforms>
 							<platform>
 								<architecture>arm64</architecture>
