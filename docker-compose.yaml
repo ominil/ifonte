@@ -43,6 +43,18 @@ services:
       - db
     restart: unless-stopped
 
+  ifonte-react:
+    container_name: ifonte-react
+    image: ifonte/ifonte-react
+    build:
+      context: frontend/ifonte-react
+    ports:
+      - "3000:5173"
+    depends_on:
+      - ifonte-api
+    restart: unless-stopped
+
+
 
 networks:
   postgres:
