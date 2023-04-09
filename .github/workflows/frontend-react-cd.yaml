@@ -1,4 +1,4 @@
-name: CD - Deploy React Frontend
+name: CD - Deploy React iFonte Frontend
 
 on:
   workflow_dispatch:
