@@ -31,7 +31,7 @@ public class IFonteApplication {
             );
 
             List<Employer> employers = List.of(employer);
-//            employerRepository.saveAll(employers);
+            employerRepository.saveAll(employers);
         };
     }
 }

@@ -36,12 +36,26 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ifonte
     ports:
-      - "9080:8080"
+      - "8088:8080"
     networks:
       - postgres
     depends_on:
       - db
     restart: unless-stopped
+
+  ifonte-react:
+    container_name: ifonte-react
+    image: ifonte/ifonte-react
+    build:
+      context: frontend/ifonte-react
+      args:
+        api_base_url: http://localhost:8088
+    ports:
+      - "3000:5173"
+    depends_on:
+      - ifonte-api
+    restart: unless-stopped
+
 
 
 networks:
