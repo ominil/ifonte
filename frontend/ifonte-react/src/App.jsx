@@ -20,7 +20,7 @@ const App = () => {
             setError(true)
             errorNotification(
                 err.code,
-                err.response.data.message
+                err.response?.data.message || err.response
             )
         }).finally( () => setLoading(false))
     }
