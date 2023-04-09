@@ -9,9 +9,11 @@ public class PingPongController {
 
     record PingPong(String result){}
 
+    private static int ping = 0;
+
     @GetMapping("/ping")
     public PingPong getPingPong() {
-        return new PingPong("Pong, check slack messages");
+        return new PingPong("Pong: " + ping++);
     }
 
 }
