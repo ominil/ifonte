@@ -4,6 +4,7 @@ import ch.ti.ifonte.exception.DuplicateResourceException;
 import ch.ti.ifonte.exception.RequestValidationException;
 import ch.ti.ifonte.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,8 +14,11 @@ public class EmployerService {
 
     private final EmployerDao employerDao;
 
-    public EmployerService(@Qualifier("jdbc") EmployerDao employerDao) {
+    private final PasswordEncoder passwordEncoder;
+
+    public EmployerService(@Qualifier("jpa") EmployerDao employerDao, PasswordEncoder passwordEncoder) {
         this.employerDao = employerDao;
+        this.passwordEncoder = passwordEncoder;
     }
     public List<Employer> getAllEmployers() {
         return employerDao.selectAllEmployers();
@@ -40,6 +44,7 @@ public class EmployerService {
         Employer employer = Employer.builder()
                 .email(employerRegistrationRequest.email())
                 .name(employerRegistrationRequest.name())
+                .password(passwordEncoder.encode(employerRegistrationRequest.password()))
                 .build();
 
         employerDao.insertEmployer(employer);

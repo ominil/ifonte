@@ -16,4 +16,5 @@ public interface EmployerDao {
     boolean existEmployerById(Integer id);
 
     void updateEmployer(Employer employer);
+    Optional<Employer> selectUserByEmail(String email);
 }

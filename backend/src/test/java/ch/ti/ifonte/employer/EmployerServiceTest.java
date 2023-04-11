@@ -9,6 +9,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -22,9 +24,12 @@ class EmployerServiceTest {
     @Mock
     private EmployerDao employerDao;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @BeforeEach
     void setUp() {
-        underTest = new EmployerService(employerDao);
+        underTest = new EmployerService(employerDao, passwordEncoder);
     }
 
     @Test
@@ -82,8 +87,11 @@ class EmployerServiceTest {
         when(employerDao.existPersonWithEmail(email)).thenReturn(false);
 
         EmployerRegistrationRequest request = new EmployerRegistrationRequest(
-                "foo", email
-        );
+                "foo", email,
+                "password");
+
+        String passwordHash = "YFOEHPOAJCPO#§";
+        when(passwordEncoder.encode(request.password())).thenReturn(passwordHash);
 
         // When
         underTest.addEmployer(request);
@@ -97,6 +105,7 @@ class EmployerServiceTest {
         assertThat(captoredEmployer.getId()).isNull();
         assertThat(captoredEmployer.getName()).isEqualTo(request.name());
         assertThat(captoredEmployer.getEmail()).isEqualTo(request.email());
+        assertThat(captoredEmployer.getPassword()).isEqualTo(passwordHash);
     }
 
     @Test
@@ -107,8 +116,8 @@ class EmployerServiceTest {
         when(employerDao.existPersonWithEmail(email)).thenReturn(true);
 
         EmployerRegistrationRequest request = new EmployerRegistrationRequest(
-                "foo", email
-        );
+                "foo", email,
+                "password");
 
         // When
         assertThatThrownBy(() -> underTest.addEmployer(request))

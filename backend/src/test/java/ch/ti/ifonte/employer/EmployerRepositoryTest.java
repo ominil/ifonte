@@ -1,11 +1,13 @@
 package ch.ti.ifonte.employer;
 
 import ch.ti.ifonte.AbstractTestcontainers;
+import ch.ti.ifonte.TestConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import java.util.UUID;
 
@@ -14,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace =  AutoConfigureTestDatabase.Replace.NONE)
+@Import({TestConfig.class})
 class EmployerRepositoryTest extends AbstractTestcontainers {
 
     @Autowired
@@ -31,8 +34,8 @@ class EmployerRepositoryTest extends AbstractTestcontainers {
         String name = FAKER.name().fullName();
         Employer Employer = new Employer(
                 name,
-                email
-        );
+                email,
+                "password");
 
         underTest.save(Employer);
 

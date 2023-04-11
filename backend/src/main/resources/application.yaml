@@ -7,6 +7,15 @@ cors:
   allowed-origins: "*"
   allowed-methods: "*"
 
+
+security:
+  jwt:
+    issuer: "https://ifonte.ti.ch"
+    expiration: 15
+    secret: ${JWT_SECURITY_TOKEN}
+
+
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/ifonte

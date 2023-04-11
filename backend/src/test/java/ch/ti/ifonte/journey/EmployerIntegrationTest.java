@@ -37,8 +37,8 @@ public class EmployerIntegrationTest {
         String email = name + "." + lastname + "-" + UUID.randomUUID() +  "@testexample.com";
         EmployerRegistrationRequest employerRegistrationRequest = new EmployerRegistrationRequest(
                 name,
-                email
-        );
+                email,
+                "password");
         // send post request
 
         webTestClient.post()
@@ -98,8 +98,8 @@ public class EmployerIntegrationTest {
         String email = name + "." + lastname + "-" + UUID.randomUUID() +  "@testexample.com";
         EmployerRegistrationRequest employerRegistrationRequest = new EmployerRegistrationRequest(
                 name,
-                email
-        );
+                email,
+                "password");
         // send post request
 
         webTestClient.post()
@@ -154,8 +154,8 @@ public class EmployerIntegrationTest {
         String email = name + "." + lastname + "-" + UUID.randomUUID() +  "@testexample.com";
         EmployerRegistrationRequest employerRegistrationRequest = new EmployerRegistrationRequest(
                 name,
-                email
-        );
+                email,
+                "password");
         // send post request
 
         webTestClient.post()

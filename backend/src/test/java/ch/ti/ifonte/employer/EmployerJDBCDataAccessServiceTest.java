@@ -33,6 +33,7 @@ class EmployerJDBCDataAccessServiceTest extends AbstractTestcontainers {
         Employer employer = Employer.builder()
                 .name(FAKER.name().fullName())
                 .email(FAKER.internet().safeEmailAddress() + "." +  UUID.randomUUID())
+                .password("password")
                 .build();
         underTest.insertEmployer(employer);
 
@@ -50,6 +51,7 @@ class EmployerJDBCDataAccessServiceTest extends AbstractTestcontainers {
         Employer employer = Employer.builder()
                 .name(FAKER.name().fullName())
                 .email(email)
+                .password("password")
                 .build();
         underTest.insertEmployer(employer);
         
@@ -93,8 +95,8 @@ class EmployerJDBCDataAccessServiceTest extends AbstractTestcontainers {
         String name = FAKER.name().fullName();
         Employer Employer = new Employer(
                 name,
-                email
-        );
+                email,
+                "password");
 
         underTest.insertEmployer(Employer);
 
@@ -124,6 +126,7 @@ class EmployerJDBCDataAccessServiceTest extends AbstractTestcontainers {
         Employer employer = Employer.builder().name(
                 FAKER.name().fullName())
                 .email(email)
+                .password("password")
                 .build();
 
         underTest.insertEmployer(employer);
@@ -160,8 +163,8 @@ class EmployerJDBCDataAccessServiceTest extends AbstractTestcontainers {
         String email = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();
         Employer employer = new Employer(
                 FAKER.name().fullName(),
-                email
-        );
+                email,
+                "password");
 
         underTest.insertEmployer(employer);
 
@@ -187,8 +190,8 @@ class EmployerJDBCDataAccessServiceTest extends AbstractTestcontainers {
         String email = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();
         Employer employer = new Employer(
                 FAKER.name().fullName(),
-                email
-        );
+                email,
+                "password");
 
         underTest.insertEmployer(employer);
 
@@ -225,8 +228,8 @@ class EmployerJDBCDataAccessServiceTest extends AbstractTestcontainers {
         String email = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();
         Employer employer = new Employer(
                 FAKER.name().fullName(),
-                email
-        );
+                email,
+                "password");
 
         underTest.insertEmployer(employer);
 
@@ -262,8 +265,8 @@ class EmployerJDBCDataAccessServiceTest extends AbstractTestcontainers {
         String email = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();
         Employer employer = new Employer(
                 FAKER.name().fullName(),
-                email
-        );
+                email,
+                "password");
 
         underTest.insertEmployer(employer);
 

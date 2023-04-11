@@ -8,8 +8,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
+import java.util.UUID;
 
 @SpringBootApplication
 public class IFonteApplication {
@@ -19,7 +21,7 @@ public class IFonteApplication {
     }
 
     @Bean
-    CommandLineRunner runner(EmployerRepository employerRepository) {
+    CommandLineRunner runner(EmployerRepository employerRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             Faker faker = new Faker();
             Name name = faker.name();
@@ -27,9 +29,8 @@ public class IFonteApplication {
             String lastname = name.lastName();
             Employer employer = new Employer(
                     firstname + " " + lastname,
-                    firstname.toLowerCase() + "." + lastname.toLowerCase() + "@example.com"
-            );
-
+                    firstname.toLowerCase() + "." + lastname.toLowerCase() + "@example.com",
+                    passwordEncoder.encode(UUID.randomUUID().toString()));
             List<Employer> employers = List.of(employer);
             employerRepository.saveAll(employers);
         };
