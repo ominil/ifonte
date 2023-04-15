@@ -1,11 +1,14 @@
 package ch.ti.ifonte.employer;
 
 
+import ch.ti.ifonte.jwt.JWTUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,10 +19,11 @@ import java.util.List;
 public class EmployerController {
 
     private final EmployerService employerService;
+    private final JWTUtil jwtUtil;
 
     @Operation(summary = "Get a list of all registered employers")
     @GetMapping
-    public List<Employer> getEmployers() {
+    public List<EmployerDTO> getEmployers() {
         return employerService.getAllEmployers();
     }
 
@@ -31,7 +35,7 @@ public class EmployerController {
             }
     )
     @GetMapping("{id}")
-    public Employer getEmployerById(@PathVariable("id") Integer id) {
+    public EmployerDTO getEmployerById(@PathVariable("id") Integer id) {
         return employerService.getEmployer(id);
     }
 
@@ -43,10 +47,15 @@ public class EmployerController {
             }
     )
     @PostMapping
-    public void registerEmployer(
+    public ResponseEntity<?> registerEmployer(
             @RequestBody EmployerRegistrationRequest employerRegistrationRequest
     ) {
+
         employerService.addEmployer(employerRegistrationRequest);
+        String jwtToken = jwtUtil.issueToken(employerRegistrationRequest.email(), "ROLE_USER");
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .build();
     }
 
     @Operation(summary = "Update employer info")

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-@Repository("employer_jpa")
+@Repository("jpa")
 @AllArgsConstructor
 public class EmployerJPADataAccessService implements EmployerDao {
 
@@ -44,5 +44,10 @@ public class EmployerJPADataAccessService implements EmployerDao {
     @Override
     public void updateEmployer(Employer employer) {
         employerRepository.save(employer);
+    }
+
+    @Override
+    public Optional<Employer> selectUserByEmail(String email) {
+        return employerRepository.findEmployerByEmail(email);
     }
 }

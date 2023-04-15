@@ -16,6 +16,7 @@ public class EmployerRowMapper implements RowMapper<Employer> {
                 .id(rs.getInt("id"))
                 .name(rs.getString("name"))
                 .email(rs.getString("email"))
+                .password(rs.getString("password"))
                 .build();
     }
 }

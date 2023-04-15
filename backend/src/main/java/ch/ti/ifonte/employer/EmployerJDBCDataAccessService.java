@@ -17,7 +17,7 @@ public class EmployerJDBCDataAccessService implements EmployerDao {
     @Override
     public List<Employer> selectAllEmployers() {
         var sql = """
-                    SELECT id, name, email
+                    SELECT id, name, email, password
                     FROM employer
                 """;
 
@@ -29,7 +29,7 @@ public class EmployerJDBCDataAccessService implements EmployerDao {
     public Optional<Employer> selectEmployerById(Integer employerId) {
 
         var sql = """
-                   SELECT id, name, email
+                   SELECT id, name, email, password
                    FROM employer
                    WHERE id = ?
                 """;
@@ -39,13 +39,26 @@ public class EmployerJDBCDataAccessService implements EmployerDao {
     }
 
     @Override
-    public void insertEmployer(Employer employer) {
+    public Optional<Employer> selectUserByEmail(String email) {
+
         var sql = """
-                    INSERT INTO employer(name, email)
-                    VALUES (?, ?)
+                   SELECT id, name, email, password
+                   FROM employer
+                   WHERE email = ?
                 """;
 
-        jdbcTemplate.update(sql, employer.getName(), employer.getEmail());
+        return jdbcTemplate.query(sql, employerRowMapper, email).stream()
+                .findFirst();
+    }
+
+    @Override
+    public void insertEmployer(Employer employer) {
+        var sql = """
+                    INSERT INTO employer(name, email, password)
+                    VALUES (?, ?, ?)
+                """;
+
+        jdbcTemplate.update(sql, employer.getName(), employer.getEmail(), employer.getPassword());
     }
 
     @Override
