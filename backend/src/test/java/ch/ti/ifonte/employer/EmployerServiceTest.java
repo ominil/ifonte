@@ -27,9 +27,11 @@ class EmployerServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    private final EmployerDTOMapper employerDTOMapper = new EmployerDTOMapper();
+
     @BeforeEach
     void setUp() {
-        underTest = new EmployerService(employerDao, passwordEncoder);
+        underTest = new EmployerService(employerDao, passwordEncoder, employerDTOMapper);
     }
 
     @Test
@@ -50,15 +52,18 @@ class EmployerServiceTest {
                 .name("bob")
                 .email("example@domain.com")
                 .build();
+
+        EmployerDTO expected = employerDTOMapper.apply(employer);
+
         when(employerDao.selectEmployerById(id)).thenReturn(
             Optional.of(employer)
         );
 
         // When
-        Employer actual = underTest.getEmployer(id);
+        EmployerDTO actual = underTest.getEmployer(id);
 
         // Then
-        assertThat(actual).isEqualTo(employer);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test

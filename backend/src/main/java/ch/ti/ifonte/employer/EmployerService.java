@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployerService {
@@ -15,21 +16,27 @@ public class EmployerService {
     private final EmployerDao employerDao;
 
     private final PasswordEncoder passwordEncoder;
+    private final EmployerDTOMapper employerDTOMapper;
 
-    public EmployerService(@Qualifier("jpa") EmployerDao employerDao, PasswordEncoder passwordEncoder) {
+    public EmployerService(@Qualifier("jpa") EmployerDao employerDao, PasswordEncoder passwordEncoder, EmployerDTOMapper employerDTOMapper) {
         this.employerDao = employerDao;
         this.passwordEncoder = passwordEncoder;
+        this.employerDTOMapper = employerDTOMapper;
     }
-    public List<Employer> getAllEmployers() {
-        return employerDao.selectAllEmployers();
+    public List<EmployerDTO> getAllEmployers() {
+        return employerDao.selectAllEmployers()
+                .stream()
+                .map(employerDTOMapper)
+                .collect(Collectors.toList());
     }
 
-    public Employer getEmployer(Integer employerId) {
-        return employerDao.selectEmployerById(employerId).orElseThrow(
-                () -> new ResourceNotFoundException(
+    public EmployerDTO getEmployer(Integer employerId) {
+        return employerDao.selectEmployerById(employerId)
+                .map(employerDTOMapper)
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Employer with id [%s] not found".formatted(employerId)
-                )
-        );
+                        )
+                );
     }
 
     public void addEmployer(EmployerRegistrationRequest employerRegistrationRequest) {
@@ -64,7 +71,11 @@ public class EmployerService {
 
     public void updateEmployer(Integer employerId, EmployerUpdateRequest employerUpdateRequest) {
 
-        Employer employer = getEmployer(employerId);
+        Employer employer = employerDao.selectEmployerById(employerId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                                "Employer with id [%s] not found".formatted(employerId)
+                        )
+                );
 
         boolean changes = false;
 

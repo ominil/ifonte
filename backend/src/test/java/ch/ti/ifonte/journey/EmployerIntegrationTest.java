@@ -1,6 +1,6 @@
 package ch.ti.ifonte.journey;
 
-import ch.ti.ifonte.employer.Employer;
+import ch.ti.ifonte.employer.EmployerDTO;
 import ch.ti.ifonte.employer.EmployerRegistrationRequest;
 import ch.ti.ifonte.employer.EmployerUpdateRequest;
 import com.github.javafaker.Faker;
@@ -18,13 +18,14 @@ import java.util.UUID;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 public class EmployerIntegrationTest {
 
     @Autowired
     private WebTestClient webTestClient;
-    private static final String EMPLOYERS_URI = "/api/v1/employers";
+    private static final String EMPLOYER_PATH = "/api/v1/employers";
 
 
     @Test
@@ -41,50 +42,60 @@ public class EmployerIntegrationTest {
                 "password");
         // send post request
 
-        webTestClient.post()
-                .uri(EMPLOYERS_URI)
+        String jwtToken = webTestClient.post()
+                .uri(EMPLOYER_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(employerRegistrationRequest), EmployerRegistrationRequest.class)
                 .exchange()
                 .expectStatus()
-                .isOk();
+                .isOk()
+                .returnResult(Void.class)
+                .getResponseHeaders()
+                .get(AUTHORIZATION)
+                .get(0);
+
         // get all employer
-        List<Employer> allEmployers = webTestClient.get()
-                .uri(EMPLOYERS_URI)
+        List<EmployerDTO> allEmployers = webTestClient.get()
+                .uri(EMPLOYER_PATH)
                 .accept(MediaType.APPLICATION_JSON)
+                .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk()
-                .expectBodyList(new ParameterizedTypeReference<Employer>() {})
+                .expectBodyList(new ParameterizedTypeReference<EmployerDTO>() {})
                 .returnResult()
                 .getResponseBody();
 
-        // make sure employer is present
-        Employer expectedEmployer = Employer.builder()
-                .name(name)
-                .email(email)
-                .build();
-
-        assertThat(allEmployers)
-                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
-                .contains(expectedEmployer);
 
         var id = allEmployers.stream()
-                .filter(employer -> employer.getEmail().equals(email))
-                .map(Employer::getId)
+                .filter(employer -> employer.email().equals(email))
+                .map(EmployerDTO::id)
                 .findFirst()
                 .orElseThrow();
 
-        expectedEmployer.setId(id);
+        // make sure employer is present
+        EmployerDTO expectedEmployer = new EmployerDTO(
+                id,
+                name,
+                email,
+                List.of("ROLE_USER"),
+                email
+        );
+
+
+
+        assertThat(allEmployers).contains(expectedEmployer);
+
         // get employer by id
         webTestClient.get()
-                .uri(EMPLOYERS_URI + "/{id}", id)
+                .uri(EMPLOYER_PATH + "/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
+                .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk()
-                .expectBody(new ParameterizedTypeReference<Employer>() {})
+                .expectBody(new ParameterizedTypeReference<EmployerDTO>() {})
                 .isEqualTo(expectedEmployer);
     }
 
@@ -100,45 +111,68 @@ public class EmployerIntegrationTest {
                 name,
                 email,
                 "password");
-        // send post request
 
+        EmployerRegistrationRequest employerRegistrationRequest2 = new EmployerRegistrationRequest(
+                name,
+                email + ".ch",
+                "password");
+
+        // create a employer to delete
         webTestClient.post()
-                .uri(EMPLOYERS_URI)
+                .uri(EMPLOYER_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(employerRegistrationRequest), EmployerRegistrationRequest.class)
                 .exchange()
                 .expectStatus()
                 .isOk();
-        // get all employer
-        List<Employer> allEmployers = webTestClient.get()
-                .uri(EMPLOYERS_URI)
+
+        // send post request to create employer that will delete the previous one
+        String jwtToken = webTestClient.post()
+                .uri(EMPLOYER_PATH)
                 .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(employerRegistrationRequest2), EmployerRegistrationRequest.class)
                 .exchange()
                 .expectStatus()
                 .isOk()
-                .expectBodyList(new ParameterizedTypeReference<Employer>() {})
+                .returnResult(Void.class)
+                .getResponseHeaders()
+                .get(AUTHORIZATION)
+                .get(0);
+
+        // get all employer
+        List<EmployerDTO> allEmployers = webTestClient.get()
+                .uri(EMPLOYER_PATH)
+                .accept(MediaType.APPLICATION_JSON)
+                .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBodyList(new ParameterizedTypeReference<EmployerDTO>() {})
                 .returnResult()
                 .getResponseBody();
 
         var id = allEmployers.stream()
-                .filter(employer -> employer.getEmail().equals(email))
-                .map(Employer::getId)
+                .filter(employer -> employer.email().equals(email))
+                .map(EmployerDTO::id)
                 .findFirst()
                 .orElseThrow();
 
-        // delete employer
+        // employer 2 deletes employer 1
         webTestClient.delete()
-                .uri(EMPLOYERS_URI + "/{id}", id)
+                .uri(EMPLOYER_PATH + "/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
+                .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk();
 
-        // get employer by id
+        // employer 2 gets employer by id
         webTestClient.get()
-                .uri(EMPLOYERS_URI + "/{id}", id)
+                .uri(EMPLOYER_PATH + "/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
+                .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
                 .exchange()
                 .expectStatus()
                 .isNotFound();
@@ -158,28 +192,33 @@ public class EmployerIntegrationTest {
                 "password");
         // send post request
 
-        webTestClient.post()
-                .uri(EMPLOYERS_URI)
+        String jwtToken = webTestClient.post()
+                .uri(EMPLOYER_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(employerRegistrationRequest), EmployerRegistrationRequest.class)
                 .exchange()
                 .expectStatus()
-                .isOk();
+                .isOk()
+                .returnResult(Void.class)
+                .getResponseHeaders()
+                .get(AUTHORIZATION)
+                .get(0);
         // get all employer
-        List<Employer> allEmployers = webTestClient.get()
-                .uri(EMPLOYERS_URI)
+        List<EmployerDTO> allEmployers = webTestClient.get()
+                .uri(EMPLOYER_PATH)
                 .accept(MediaType.APPLICATION_JSON)
+                .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk()
-                .expectBodyList(new ParameterizedTypeReference<Employer>() {})
+                .expectBodyList(new ParameterizedTypeReference<EmployerDTO>() {})
                 .returnResult()
                 .getResponseBody();
 
         var id = allEmployers.stream()
-                .filter(employer -> employer.getEmail().equals(email))
-                .map(Employer::getId)
+                .filter(employer -> employer.email().equals(email))
+                .map(EmployerDTO::id)
                 .findFirst()
                 .orElseThrow();
 
@@ -190,30 +229,30 @@ public class EmployerIntegrationTest {
         );
 
         webTestClient.put()
-                .uri(EMPLOYERS_URI + "/{id}", id)
+                .uri(EMPLOYER_PATH + "/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(updateRequest), EmployerUpdateRequest.class)
+                .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk();
 
         // get employer by id
-        Employer updatedEmployer = webTestClient.get()
-                .uri(EMPLOYERS_URI + "/{id}", id)
+        EmployerDTO updatedEmployer = webTestClient.get()
+                .uri(EMPLOYER_PATH + "/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
+                .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk()
-                .expectBody(Employer.class)
+                .expectBody(EmployerDTO.class)
                 .returnResult()
                 .getResponseBody();
 
-        Employer expected = Employer.builder()
-                .id(id)
-                .name(newName)
-                .email(email)
-                .build();
+        EmployerDTO expected = new EmployerDTO(
+                id, newName, email, List.of("ROLE_USER"), email
+        );
 
         assertThat(updatedEmployer).isEqualTo(expected);
     }

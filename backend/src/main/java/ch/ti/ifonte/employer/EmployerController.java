@@ -23,7 +23,7 @@ public class EmployerController {
 
     @Operation(summary = "Get a list of all registered employers")
     @GetMapping
-    public List<Employer> getEmployers() {
+    public List<EmployerDTO> getEmployers() {
         return employerService.getAllEmployers();
     }
 
@@ -35,7 +35,7 @@ public class EmployerController {
             }
     )
     @GetMapping("{id}")
-    public Employer getEmployerById(@PathVariable("id") Integer id) {
+    public EmployerDTO getEmployerById(@PathVariable("id") Integer id) {
         return employerService.getEmployer(id);
     }
 
