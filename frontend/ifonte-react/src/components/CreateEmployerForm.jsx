@@ -32,6 +32,7 @@ const CreateEmployerForm = ({ fetchEmployers }) => {
                 initialValues={{
                     name: '',
                     email: '',
+                    password: '',
                 }}
                 validationSchema={Yup.object({
                     name: Yup.string()
@@ -39,7 +40,10 @@ const CreateEmployerForm = ({ fetchEmployers }) => {
                         .required('Required'),
                     email: Yup.string()
                         .email('Invalid email address')
-                        .required('Required')
+                        .required('Required'),
+                    password: Yup.string()
+                        .min(8, 'Must be 4 char or more')
+                        .required('Required'),
                 })}
                 onSubmit={(employer, { setSubmitting }) => {
                     setSubmitting(true);
@@ -77,6 +81,14 @@ const CreateEmployerForm = ({ fetchEmployers }) => {
                                 name="email"
                                 type="email"
                                 placeholder="jane@formik.com"
+                            />
+
+                            <MyTextInput
+                                label="Password"
+                                isRequired={true}
+                                name="password"
+                                type="password"
+                                placeholder="Use a secure password"
                             />
 
                             <Button isDisabled={!isValid || isSubmitting} type="submit">Submit</Button>
