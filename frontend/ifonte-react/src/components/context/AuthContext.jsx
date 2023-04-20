@@ -10,13 +10,13 @@ const AuthContext = createContext({});
 
 const AuthProvider = ({ children }) => {
 
-    const [employer, setEmployer] = useState(null);
+    const [customer, setCustomer] = useState(null);
 
     useEffect(() => {
         const token = localStorage.getItem('access_token');
         if (token) {
             const {sub: username, scopes: roles} = jwtDecode(token);
-            setEmployer({
+            setCustomer({
                 name: username,
                 roles: roles
             })
@@ -31,7 +31,7 @@ const AuthProvider = ({ children }) => {
                 localStorage.setItem('access_token', jwtToken)
 
                 const {sub: username, scopes: roles} = jwtDecode(jwtToken);
-                setEmployer({
+                setCustomer({
                     name: username,
                     roles: roles
                 })
@@ -45,7 +45,7 @@ const AuthProvider = ({ children }) => {
 
     const logout = () => {
         localStorage.removeItem('access_token');
-        setEmployer(null);
+        setCustomer(null);
     }
 
     const isUserAuthenticated = () => {
@@ -65,7 +65,7 @@ const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={{
-            employer,
+            customer,
             performLogin,
             logout,
             isUserAuthenticated

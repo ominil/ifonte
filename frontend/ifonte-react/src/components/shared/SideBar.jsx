@@ -131,7 +131,7 @@ const NavItem = ({ icon, children, ...rest }) => {
 
 const MobileNav = ({ onOpen, ...rest }) => {
 
-    const { employer, logout } = useAuth();
+    const { customer, logout } = useAuth();
 
     return (
         <Flex
@@ -185,9 +185,9 @@ const MobileNav = ({ onOpen, ...rest }) => {
                                     alignItems="flex-start"
                                     spacing="1px"
                                     ml="2">
-                                    <Text fontSize="sm">{employer?.name}</Text>
+                                    <Text fontSize="sm">{customer?.name}</Text>
                                     {
-                                        employer?.roles.map((role, id) => (
+                                        customer?.roles.map((role, id) => (
                                             <Text key={id} fontSize="xs" color="gray.600">
                                                 {role}
                                             </Text>

@@ -1,8 +1,8 @@
 package ch.ti.ifonte.auth;
 
-import ch.ti.ifonte.employer.Employer;
-import ch.ti.ifonte.employer.EmployerDTO;
-import ch.ti.ifonte.employer.EmployerDTOMapper;
+import ch.ti.ifonte.customer.Customer;
+import ch.ti.ifonte.customer.CustomerDTO;
+import ch.ti.ifonte.customer.CustomerDTOMapper;
 import ch.ti.ifonte.jwt.JWTUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
-    private final EmployerDTOMapper employerDTOMapper;
+    private final CustomerDTOMapper customerDTOMapper;
     private final JWTUtil jwtUtil;
 
 
@@ -27,10 +27,10 @@ public class AuthenticationService {
                 )
         );
 
-        Employer principal = (Employer) authenticate.getPrincipal();
-        EmployerDTO employerDTO = employerDTOMapper.apply(principal);
-        String jwtToken = jwtUtil.issueToken(employerDTO.username(), employerDTO.roles());
+        Customer principal = (Customer) authenticate.getPrincipal();
+        CustomerDTO customerDTO = customerDTOMapper.apply(principal);
+        String jwtToken = jwtUtil.issueToken(customerDTO.username(), customerDTO.roles());
 
-        return new AuthenticationResponse(jwtToken, employerDTO.id());
+        return new AuthenticationResponse(jwtToken, customerDTO.id());
     }
 }

@@ -1,4 +1,4 @@
-package ch.ti.ifonte.employer;
+package ch.ti.ifonte.customer;
 
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -9,63 +9,63 @@ import java.util.Optional;
 
 @Repository("jdbc")
 @AllArgsConstructor
-public class EmployerJDBCDataAccessService implements EmployerDao {
+public class CustomerJDBCDataAccessService implements CustomerDao {
 
     private final JdbcTemplate jdbcTemplate;
-    private final EmployerRowMapper employerRowMapper;
+    private final CustomerRowMapper customerRowMapper;
 
     @Override
-    public List<Employer> selectAllEmployers() {
+    public List<Customer> selectAllCustomers() {
         var sql = """
                     SELECT id, name, email, password
-                    FROM employer
+                    FROM customer
                 """;
 
 
-       return jdbcTemplate.query(sql, employerRowMapper);
+       return jdbcTemplate.query(sql, customerRowMapper);
     }
 
     @Override
-    public Optional<Employer> selectEmployerById(Integer employerId) {
+    public Optional<Customer> selectCustomerById(Integer customerId) {
 
         var sql = """
                    SELECT id, name, email, password
-                   FROM employer
+                   FROM customer
                    WHERE id = ?
                 """;
 
-        return jdbcTemplate.query(sql, employerRowMapper, employerId).stream()
+        return jdbcTemplate.query(sql, customerRowMapper, customerId).stream()
                 .findFirst();
     }
 
     @Override
-    public Optional<Employer> selectUserByEmail(String email) {
+    public Optional<Customer> selectCustomerByEmail(String email) {
 
         var sql = """
                    SELECT id, name, email, password
-                   FROM employer
+                   FROM customer
                    WHERE email = ?
                 """;
 
-        return jdbcTemplate.query(sql, employerRowMapper, email).stream()
+        return jdbcTemplate.query(sql, customerRowMapper, email).stream()
                 .findFirst();
     }
 
     @Override
-    public void insertEmployer(Employer employer) {
+    public void insertCustomer(Customer customer) {
         var sql = """
-                    INSERT INTO employer(name, email, password)
+                    INSERT INTO customer(name, email, password)
                     VALUES (?, ?, ?)
                 """;
 
-        jdbcTemplate.update(sql, employer.getName(), employer.getEmail(), employer.getPassword());
+        jdbcTemplate.update(sql, customer.getName(), customer.getEmail(), customer.getPassword());
     }
 
     @Override
-    public void deleteEmployerById(Integer id) {
+    public void deleteCustomerById(Integer id) {
         var sql = """
                 DELETE
-                FROM employer
+                FROM customer
                 WHERE id = ?
                 """;
 
@@ -73,11 +73,11 @@ public class EmployerJDBCDataAccessService implements EmployerDao {
     }
 
     @Override
-    public boolean existPersonWithEmail(String email) {
+    public boolean existCustomerWithEmail(String email) {
 
         var sql = """
                 SELECT count(id)
-                FROM employer
+                FROM customer
                 WHERE email = ?
                 """;
 
@@ -87,10 +87,10 @@ public class EmployerJDBCDataAccessService implements EmployerDao {
     }
 
     @Override
-    public boolean existEmployerById(Integer id) {
+    public boolean existCustomerById(Integer id) {
         var sql = """
                 SELECT count(id)
-                FROM employer
+                FROM customer
                 WHERE id = ?
                 """;
 
@@ -100,17 +100,17 @@ public class EmployerJDBCDataAccessService implements EmployerDao {
     }
 
     @Override
-    public void updateEmployer(Employer employer) {
-        if (employer.getName() != null) {
-            String  sql = "UPDATE employer SET name = ? WHERE id = ?";
+    public void updateCustomer(Customer customer) {
+        if (customer.getName() != null) {
+            String  sql = "UPDATE customer SET name = ? WHERE id = ?";
 
-            jdbcTemplate.update(sql, employer.getName(), employer.getId());
+            jdbcTemplate.update(sql, customer.getName(), customer.getId());
         }
 
-        if (employer.getEmail() != null) {
-            String  sql = "UPDATE employer SET email = ? WHERE id = ?";
+        if (customer.getEmail() != null) {
+            String  sql = "UPDATE customer SET email = ? WHERE id = ?";
 
-            jdbcTemplate.update(sql, employer.getEmail(), employer.getId());
+            jdbcTemplate.update(sql, customer.getEmail(), customer.getId());
         }
     }
 }

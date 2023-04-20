@@ -8,11 +8,11 @@ import {
     DrawerOverlay,
     useDisclosure
 } from "@chakra-ui/react";
-import CreateEmployerForm from "./CreateEmployerForm.jsx";
+import CreateCustomerForm from "./CreateCustomerForm.jsx";
 
 const AddIcon = () => "+"
 
-const CreateEmployerDrawer = ({fetchEmployers}) => {
+const CreateCustomerDrawer = ({fetchCustomers}) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -24,17 +24,17 @@ const CreateEmployerDrawer = ({fetchEmployers}) => {
                 onClick={onOpen}
 
             >
-                Create Employer
+                Create Customer
             </Button>
             <Drawer isOpen={isOpen} onClose={onClose} size={"lg"}>
                 <DrawerOverlay />
                 <DrawerContent>
                     <DrawerCloseButton />
-                    <DrawerHeader>Create your employer</DrawerHeader>
+                    <DrawerHeader>Create your customer</DrawerHeader>
 
                     <DrawerBody>
-                        <CreateEmployerForm
-                            fetchEmployers={fetchEmployers}
+                        <CreateCustomerForm
+                            fetchCustomers={fetchCustomers}
                         />
                     </DrawerBody>
 
@@ -46,4 +46,4 @@ const CreateEmployerDrawer = ({fetchEmployers}) => {
     )
 }
 
-export default CreateEmployerDrawer;
+export default CreateCustomerDrawer;

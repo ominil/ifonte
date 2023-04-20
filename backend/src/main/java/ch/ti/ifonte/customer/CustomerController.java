@@ -1,4 +1,4 @@
-package ch.ti.ifonte.employer;
+package ch.ti.ifonte.customer;
 
 
 import ch.ti.ifonte.jwt.JWTUtil;
@@ -14,32 +14,32 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/employers")
+@RequestMapping("api/v1/customers")
 @AllArgsConstructor
-public class EmployerController {
+public class CustomerController {
 
-    private final EmployerService employerService;
+    private final CustomerService customerService;
     private final JWTUtil jwtUtil;
 
-    @Operation(summary = "Get a list of all registered employers")
+    @Operation(summary = "Get a list of all registered customers")
     @GetMapping
-    public List<EmployerDTO> getEmployers() {
-        return employerService.getAllEmployers();
+    public List<CustomerDTO> getCustomers() {
+        return customerService.getAllCustomers();
     }
 
-    @Operation(summary = "Retrieve employer by id")
+    @Operation(summary = "Retrieve customer by id")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
-                    @ApiResponse(responseCode = "404", description = "Employer not found", content = @Content),
+                    @ApiResponse(responseCode = "404", description = "Customer not found", content = @Content),
             }
     )
     @GetMapping("{id}")
-    public EmployerDTO getEmployerById(@PathVariable("id") Integer id) {
-        return employerService.getEmployer(id);
+    public CustomerDTO getCustomerById(@PathVariable("id") Integer id) {
+        return customerService.getCustomerById(id);
     }
 
-    @Operation(summary = "Create new employer")
+    @Operation(summary = "Create new customer")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
@@ -47,41 +47,41 @@ public class EmployerController {
             }
     )
     @PostMapping
-    public ResponseEntity<?> registerEmployer(
-            @RequestBody EmployerRegistrationRequest employerRegistrationRequest
+    public ResponseEntity<?> registerCustomer(
+            @RequestBody CustomerRegistrationRequest customerRegistrationRequest
     ) {
 
-        employerService.addEmployer(employerRegistrationRequest);
-        String jwtToken = jwtUtil.issueToken(employerRegistrationRequest.email(), "ROLE_USER");
+        customerService.addCustomer(customerRegistrationRequest);
+        String jwtToken = jwtUtil.issueToken(customerRegistrationRequest.email(), "ROLE_USER");
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, jwtToken)
                 .build();
     }
 
-    @Operation(summary = "Update employer info")
+    @Operation(summary = "Update customer info")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
                     @ApiResponse(responseCode = "404", description = "Bad request", content = @Content),
             }
     )
-    @PutMapping("{employerId}")
-    public void updateEmployer(
-        @PathVariable("employerId") Integer employerId,
-        @RequestBody EmployerUpdateRequest employerUpdateRequest
+    @PutMapping("{customerId}")
+    public void updateCustomer(
+        @PathVariable("customerId") Integer customerId,
+        @RequestBody CustomerUpdateRequest customerUpdateRequest
     ) {
-        employerService.updateEmployer(employerId, employerUpdateRequest);
+        customerService.updateCustomer(customerId, customerUpdateRequest);
     }
 
-    @Operation(summary = "Delete employer by id")
+    @Operation(summary = "Delete customer by id")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
-                    @ApiResponse(responseCode = "404", description = "Employer not found", content = @Content),
+                    @ApiResponse(responseCode = "404", description = "Customer not found", content = @Content),
             }
     )
-    @DeleteMapping("{id}")
-    public void deleteEmployerById(@PathVariable("id") Integer id) {
-        employerService.deleteEmployerById(id);
+    @DeleteMapping("{customerId}")
+    public void deleteCustomerById(@PathVariable("customerId") Integer customerId) {
+        customerService.deleteCustomerById(customerId);
     }
 }

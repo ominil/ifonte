@@ -1,4 +1,4 @@
-package ch.ti.ifonte.employer;
+package ch.ti.ifonte.customer;
 
 import org.junit.jupiter.api.Test;
 
@@ -11,13 +11,13 @@ import static org.mockito.Mockito.when;
 
 import static org.assertj.core.api.Assertions.*;
 
-class EmployerRowMapperTest {
+class CustomerRowMapperTest {
 
 
     @Test
     void mapRow() throws SQLException {
         // Given
-        EmployerRowMapper employerRowMapper = new EmployerRowMapper();
+        CustomerRowMapper customerRowMapper = new CustomerRowMapper();
         ResultSet resultSet = mock(ResultSet.class);
 
         int id = 10;
@@ -28,10 +28,10 @@ class EmployerRowMapperTest {
         when(resultSet.getString("email")).thenReturn(email);
 
         // When
-        Employer actual = employerRowMapper.mapRow(resultSet, 1);
+        Customer actual = customerRowMapper.mapRow(resultSet, 1);
 
         // Then
-        Employer expected = Employer.builder()
+        Customer expected = Customer.builder()
                 .id(id)
                 .name(name)
                 .email(email)

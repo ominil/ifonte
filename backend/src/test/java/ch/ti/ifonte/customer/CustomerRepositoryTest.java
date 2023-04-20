@@ -1,4 +1,4 @@
-package ch.ti.ifonte.employer;
+package ch.ti.ifonte.customer;
 
 import ch.ti.ifonte.AbstractTestcontainers;
 import ch.ti.ifonte.TestConfig;
@@ -17,10 +17,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace =  AutoConfigureTestDatabase.Replace.NONE)
 @Import({TestConfig.class})
-class EmployerRepositoryTest extends AbstractTestcontainers {
+class CustomerRepositoryTest extends AbstractTestcontainers {
 
     @Autowired
-    private EmployerRepository underTest;
+    private CustomerRepository underTest;
 
     @BeforeEach
     void setUp() {
@@ -28,31 +28,31 @@ class EmployerRepositoryTest extends AbstractTestcontainers {
     }
 
     @Test
-    void existsEmployerByEmail() {
+    void existsCustomerByEmail() {
         // GIVEN
         String email = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();
         String name = FAKER.name().fullName();
-        Employer Employer = new Employer(
+        Customer Customer = new Customer(
                 name,
                 email,
                 "password");
 
-        underTest.save(Employer);
+        underTest.save(Customer);
 
         // When
-        boolean actual = underTest.existsEmployerByEmail(email);
+        boolean actual = underTest.existsCustomerByEmail(email);
 
         // Then
         assertThat(actual).isTrue();
     }
 
     @Test
-    void existsPersonWithEmailReturnsFalseWhenDoesNotExists() {
+    void existsCustomerWithEmailReturnsFalseWhenDoesNotExists() {
         // Given
         String email = FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID();
 
         // When
-        boolean actual = underTest.existsEmployerByEmail(email);
+        boolean actual = underTest.existsCustomerByEmail(email);
 
         // Then
         assertThat(actual).isFalse();

@@ -1,7 +1,7 @@
 import { Formik, Form, useField } from 'formik';
 import * as Yup from 'yup';
 import {Alert, AlertIcon, Button, FormControl, FormLabel, Input, Stack} from "@chakra-ui/react";
-import {saveEmployer} from "../services/client.js";
+import {saveCustomer} from "../services/client.js";
 import {errorNotification, successNotification} from "../services/notification.js";
 
 const MyTextInput = ({ label, isRequired, ...props }) => {
@@ -24,7 +24,7 @@ const MyTextInput = ({ label, isRequired, ...props }) => {
 };
 
 // And now we can use these
-const CreateEmployerForm = ({ fetchEmployers }) => {
+const CreateCustomerForm = ({ fetchCustomers }) => {
 
     return (
         <>
@@ -45,15 +45,15 @@ const CreateEmployerForm = ({ fetchEmployers }) => {
                         .min(8, 'Must be 4 char or more')
                         .required('Required'),
                 })}
-                onSubmit={(employer, { setSubmitting }) => {
+                onSubmit={(customer, { setSubmitting }) => {
                     setSubmitting(true);
-                    saveEmployer(employer)
+                    saveCustomer(customer)
                         .then(() => {
                             successNotification(
-                                "Employer saved",
-                                `${employer.name} was successfully saved`
+                                "Customer saved",
+                                `${customer.name} was successfully saved`
                             )
-                            fetchEmployers()
+                            fetchCustomers()
                         }).catch(err => {
                             errorNotification(
                                 err.code,
@@ -100,4 +100,4 @@ const CreateEmployerForm = ({ fetchEmployers }) => {
     );
 };
 
-export default CreateEmployerForm;
+export default CreateCustomerForm;

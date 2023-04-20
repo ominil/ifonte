@@ -6,10 +6,10 @@ const getAuthConfig = () => ({
     }
 })
 
-export const getEmployers = async () => {
+export const getCustomers = async () => {
     try {
         return await axios.get(
-            `${import.meta.env.VITE_API_BASE_URL}/api/v1/employers`,
+            `${import.meta.env.VITE_API_BASE_URL}/api/v1/customers`,
             getAuthConfig()
         )
     } catch (e) {
@@ -17,10 +17,10 @@ export const getEmployers = async () => {
     }
 }
 
-export const getEmployerById = async (employerId) => {
+export const getCustomerById = async (customersId) => {
     try {
         return await axios.get(
-            `${import.meta.env.VITE_API_BASE_URL}/api/v1/employers/${employerId}`,
+            `${import.meta.env.VITE_API_BASE_URL}/api/v1/customers/${customersId}`,
             getAuthConfig()
         )
     } catch (e) {
@@ -29,21 +29,21 @@ export const getEmployerById = async (employerId) => {
 }
 
 
-export const saveEmployer = async (employer) => {
+export const saveCustomer = async (customers) => {
     try {
         return axios.post(
-            `${import.meta.env.VITE_API_BASE_URL}/api/v1/employers`,
-            employer
+            `${import.meta.env.VITE_API_BASE_URL}/api/v1/customers`,
+            customers
         )
     } catch (e) {
         throw e;
     }
 }
 
-export const updateEmployer = async (id, update) => {
+export const updateCustomer = async (id, update) => {
     try {
         return axios.put(
-            `${import.meta.env.VITE_API_BASE_URL}/api/v1/employers/${id}`,
+            `${import.meta.env.VITE_API_BASE_URL}/api/v1/customers/${id}`,
             update,
             getAuthConfig()
         )
@@ -52,10 +52,10 @@ export const updateEmployer = async (id, update) => {
     }
 }
 
-export const deleteEmployer = async (employerId) => {
+export const deleteCustomer = async (customersId) => {
     try {
         return axios.delete(
-            `${import.meta.env.VITE_API_BASE_URL}/api/v1/employers/${employerId}`,
+            `${import.meta.env.VITE_API_BASE_URL}/api/v1/customers/${customersId}`,
             getAuthConfig()
         )
     } catch (e) {

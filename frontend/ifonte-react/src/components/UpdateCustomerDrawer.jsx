@@ -8,9 +8,9 @@ import {
     DrawerOverlay,
     useDisclosure
 } from "@chakra-ui/react";
-import UpdateEmployerForm from "./UpdateEmployerForm.jsx";
+import UpdateCustomerForm from "./UpdateCustomerForm.jsx";
 
-const UpdateEmployerDrawer = ({fetchEmployers, initialValue, employerId}) => {
+const UpdateCustomerDrawer = ({fetchCustomers, initialValue, customerId}) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -34,13 +34,13 @@ const UpdateEmployerDrawer = ({fetchEmployers, initialValue, employerId}) => {
                 <DrawerOverlay />
                 <DrawerContent>
                     <DrawerCloseButton />
-                    <DrawerHeader>Update employer</DrawerHeader>
+                    <DrawerHeader>Update customer</DrawerHeader>
 
                     <DrawerBody>
-                        <UpdateEmployerForm
-                            fetchEmployers={fetchEmployers}
+                        <UpdateCustomerForm
+                            fetchCustomers={fetchCustomers}
                             initialValue={initialValue}
-                            employerId={employerId}
+                            customerId={customerId}
                         />
                     </DrawerBody>
 
@@ -52,4 +52,4 @@ const UpdateEmployerDrawer = ({fetchEmployers, initialValue, employerId}) => {
     )
 }
 
-export default UpdateEmployerDrawer;
+export default UpdateCustomerDrawer;

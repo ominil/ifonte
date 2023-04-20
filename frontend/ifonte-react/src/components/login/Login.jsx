@@ -1,12 +1,10 @@
 import {
     Button,
-    Checkbox,
     Flex,
     FormControl,
     FormLabel,
     Heading,
     Input,
-    Link,
     Stack,
     Image, Alert, AlertIcon,
 } from '@chakra-ui/react';
@@ -77,11 +75,11 @@ const LoginForm = () => {
 
 const Login = () => {
 
-    const { employer } = useAuth();
+    const { customer } = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (employer) {
+        if (customer) {
             navigate('/dashboard');
         }
     });

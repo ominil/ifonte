@@ -1,7 +1,7 @@
 import { Formik, Form, useField } from 'formik';
 import * as Yup from 'yup';
 import {Alert, AlertIcon, Button, FormControl, FormLabel, Input, Stack} from "@chakra-ui/react";
-import {updateEmployer} from "../services/client.js";
+import {updateCustomer} from "../services/client.js";
 import {errorNotification, successNotification} from "../services/notification.js";
 
 const MyTextInput = ({ label, isRequired, ...props }) => {
@@ -24,7 +24,7 @@ const MyTextInput = ({ label, isRequired, ...props }) => {
 };
 
 // And now we can use these
-const UpdateEmployerForm = ({ fetchEmployers, initialValue, employerId }) => {
+const UpdateCustomerForm = ({ fetchCustomers, initialValue, customerId }) => {
 
     return (
         <>
@@ -41,15 +41,15 @@ const UpdateEmployerForm = ({ fetchEmployers, initialValue, employerId }) => {
                         .email('Invalid email address')
                         .required('Required')
                 })}
-                onSubmit={(updatedEmployer, { setSubmitting }) => {
+                onSubmit={(updatedCustomer, { setSubmitting }) => {
                     setSubmitting(true);
-                    updateEmployer(employerId, updatedEmployer)
+                    updateCustomer(customerId, updatedCustomer)
                         .then(() => {
                             successNotification(
-                                "Employer updated",
-                                `${updatedEmployer.name} was successfully updated`
+                                "Customer updated",
+                                `${updatedCustomer.name} was successfully updated`
                             )
-                            fetchEmployers()
+                            fetchCustomers()
                         }).catch(err => {
                             errorNotification(
                                 err.code,
@@ -88,4 +88,4 @@ const UpdateEmployerForm = ({ fetchEmployers, initialValue, employerId }) => {
     );
 };
 
-export default UpdateEmployerForm;
+export default UpdateCustomerForm;
