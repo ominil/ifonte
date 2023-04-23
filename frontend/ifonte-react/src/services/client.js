@@ -1,39 +1,73 @@
 import axios from "axios";
 
-export const getEmployers = async () => {
+const getAuthConfig = () => ({
+    headers: {
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`
+    }
+})
+
+export const getCustomers = async () => {
     try {
-        return await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/employers`)
+        return await axios.get(
+            `${import.meta.env.VITE_API_BASE_URL}/api/v1/customers`,
+            getAuthConfig()
+        )
     } catch (e) {
         throw e;
     }
 }
 
-export const saveEmployer = async (employer) => {
+export const getCustomerById = async (customersId) => {
+    try {
+        return await axios.get(
+            `${import.meta.env.VITE_API_BASE_URL}/api/v1/customers/${customersId}`,
+            getAuthConfig()
+        )
+    } catch (e) {
+        throw e;
+    }
+}
+
+
+export const saveCustomer = async (customers) => {
     try {
         return axios.post(
-            `${import.meta.env.VITE_API_BASE_URL}/api/v1/employers`,
-            employer
+            `${import.meta.env.VITE_API_BASE_URL}/api/v1/customers`,
+            customers
         )
     } catch (e) {
         throw e;
     }
 }
 
-export const updateEmployer = async (id, update) => {
+export const updateCustomer = async (id, update) => {
     try {
         return axios.put(
-            `${import.meta.env.VITE_API_BASE_URL}/api/v1/employers/${id}`,
-            update
+            `${import.meta.env.VITE_API_BASE_URL}/api/v1/customers/${id}`,
+            update,
+            getAuthConfig()
         )
     } catch (e) {
         throw e;
     }
 }
 
-export const deleteEmployer = async (employerId) => {
+export const deleteCustomer = async (customersId) => {
     try {
         return axios.delete(
-            `${import.meta.env.VITE_API_BASE_URL}/api/v1/employers/${employerId}`,
+            `${import.meta.env.VITE_API_BASE_URL}/api/v1/customers/${customersId}`,
+            getAuthConfig()
+        )
+    } catch (e) {
+        throw e;
+    }
+}
+
+export const login = async (usernameAndPassword) => {
+    try {
+        return axios.post(
+            `${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/login`,
+            usernameAndPassword
         )
     } catch (e) {
         throw e;

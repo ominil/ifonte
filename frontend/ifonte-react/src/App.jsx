@@ -1,21 +1,21 @@
 import {Wrap, WrapItem, Spinner, Text} from '@chakra-ui/react'
 import SimpleSidebar from "./components/shared/SideBar.jsx";
-import {getEmployers} from "./services/client.js";
+import {getCustomers} from "./services/client.js";
 import { useEffect, useState } from "react";
-import Card from "./components/Card.jsx";
-import CreateEmployerDrawer from "./components/CreateEmployerDrawer.jsx";
+import Card from "./components/customer/Card.jsx";
+import CreateCustomerDrawer from "./components/customer/CreateCustomerDrawer.jsx";
 import {errorNotification} from "./services/notification.js";
 
 const App = () => {
 
-    const [employers, setEmployers] = useState([]);
+    const [customers, setCustomers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
 
-    const fetchEmployers = () => {
+    const fetchCustomers = () => {
         setLoading(true);
-        getEmployers().then(res => {
-            setEmployers(res.data)
+        getCustomers().then(res => {
+            setCustomers(res.data)
         }).catch(err => {
             setError(true)
             errorNotification(
@@ -26,7 +26,7 @@ const App = () => {
     }
 
     useEffect(() => {
-        fetchEmployers()
+        fetchCustomers()
     }, [])
 
     if (loading) {
@@ -46,40 +46,40 @@ const App = () => {
     if (error) {
         return (
             <SimpleSidebar>
-                <CreateEmployerDrawer
-                    fetchEmployers={fetchEmployers}
+                <CreateCustomerDrawer
+                    fetchCustomers={fetchCustomers}
                 >
 
-                </CreateEmployerDrawer>
+                </CreateCustomerDrawer>
                 <Text mt={5}>Oooops there was an error</Text>
             </SimpleSidebar>
         )
     }
 
-    if (employers.length <= 0) {
+    if (customers.length <= 0) {
         return (
             <SimpleSidebar>
-                <CreateEmployerDrawer
-                    fetchEmployers={fetchEmployers}
+                <CreateCustomerDrawer
+                    fetchCustomers={fetchCustomers}
                 >
 
-                </CreateEmployerDrawer>
-                <Text mt={5}>No employers Available</Text>
+                </CreateCustomerDrawer>
+                <Text mt={5}>No customers available</Text>
             </SimpleSidebar>
         )
     }
 
     return(
         <SimpleSidebar>
-            <CreateEmployerDrawer
-                fetchEmployers={fetchEmployers}
-            ></CreateEmployerDrawer>
+            <CreateCustomerDrawer
+                fetchCustomers={fetchCustomers}
+            ></CreateCustomerDrawer>
             <Wrap spacing={'30px'} justify={'center'}>
-                {employers.map((employer, index) => (
+                {customers.map((customer, index) => (
                     <WrapItem key={index}>
                         <Card
-                            {...employer}
-                            fetchEmployers={fetchEmployers}
+                            {...customer}
+                            fetchCustomers={fetchCustomers}
                         ></Card>
                     </WrapItem>
                 ))}

@@ -1,7 +1,7 @@
 package ch.ti.ifonte;
 
-import ch.ti.ifonte.employer.Employer;
-import ch.ti.ifonte.employer.EmployerRepository;
+import ch.ti.ifonte.customer.Customer;
+import ch.ti.ifonte.customer.CustomerRepository;
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
 import org.springframework.boot.CommandLineRunner;
@@ -21,18 +21,18 @@ public class IFonteApplication {
     }
 
     @Bean
-    CommandLineRunner runner(EmployerRepository employerRepository, PasswordEncoder passwordEncoder) {
+    CommandLineRunner runner(CustomerRepository customerRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             Faker faker = new Faker();
             Name name = faker.name();
             String firstname = name.firstName();
             String lastname = name.lastName();
-            Employer employer = new Employer(
+            Customer customer = new Customer(
                     firstname + " " + lastname,
                     firstname.toLowerCase() + "." + lastname.toLowerCase() + "@example.com",
                     passwordEncoder.encode(UUID.randomUUID().toString()));
-            List<Employer> employers = List.of(employer);
-            employerRepository.saveAll(employers);
+            List<Customer> customers = List.of(customer);
+            customerRepository.saveAll(customers);
         };
     }
 }

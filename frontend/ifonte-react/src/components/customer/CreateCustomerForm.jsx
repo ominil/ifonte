@@ -1,8 +1,8 @@
 import { Formik, Form, useField } from 'formik';
 import * as Yup from 'yup';
 import {Alert, AlertIcon, Button, FormControl, FormLabel, Input, Stack} from "@chakra-ui/react";
-import {saveEmployer} from "../services/client.js";
-import {errorNotification, successNotification} from "../services/notification.js";
+import {saveCustomer} from "../../services/client.js";
+import {errorNotification, successNotification} from "../../services/notification.js";
 
 const MyTextInput = ({ label, isRequired, ...props }) => {
     // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
@@ -24,7 +24,7 @@ const MyTextInput = ({ label, isRequired, ...props }) => {
 };
 
 // And now we can use these
-const CreateEmployerForm = ({ fetchEmployers }) => {
+const CreateCustomerForm = ({ onSuccess }) => {
 
     return (
         <>
@@ -32,6 +32,7 @@ const CreateEmployerForm = ({ fetchEmployers }) => {
                 initialValues={{
                     name: '',
                     email: '',
+                    password: '',
                 }}
                 validationSchema={Yup.object({
                     name: Yup.string()
@@ -39,17 +40,20 @@ const CreateEmployerForm = ({ fetchEmployers }) => {
                         .required('Required'),
                     email: Yup.string()
                         .email('Invalid email address')
-                        .required('Required')
+                        .required('Required'),
+                    password: Yup.string()
+                        .min(8, 'Must be 4 char or more')
+                        .required('Required'),
                 })}
-                onSubmit={(employer, { setSubmitting }) => {
+                onSubmit={(customer, { setSubmitting }) => {
                     setSubmitting(true);
-                    saveEmployer(employer)
-                        .then(() => {
+                    saveCustomer(customer)
+                        .then(res => {
                             successNotification(
-                                "Employer saved",
-                                `${employer.name} was successfully saved`
+                                "Customer saved",
+                                `${customer.name} was successfully saved`
                             )
-                            fetchEmployers()
+                            onSuccess(res.headers['authorization']);
                         }).catch(err => {
                             errorNotification(
                                 err.code,
@@ -79,6 +83,14 @@ const CreateEmployerForm = ({ fetchEmployers }) => {
                                 placeholder="jane@formik.com"
                             />
 
+                            <MyTextInput
+                                label="Password"
+                                isRequired={true}
+                                name="password"
+                                type="password"
+                                placeholder="Use a secure password"
+                            />
+
                             <Button isDisabled={!isValid || isSubmitting} type="submit">Submit</Button>
                         </Stack>
                     </Form>
@@ -88,4 +100,4 @@ const CreateEmployerForm = ({ fetchEmployers }) => {
     );
 };
 
-export default CreateEmployerForm;
+export default CreateCustomerForm;

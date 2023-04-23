@@ -1,8 +1,8 @@
 package ch.ti.ifonte.journey;
 
-import ch.ti.ifonte.employer.EmployerDTO;
-import ch.ti.ifonte.employer.EmployerRegistrationRequest;
-import ch.ti.ifonte.employer.EmployerUpdateRequest;
+import ch.ti.ifonte.customer.CustomerDTO;
+import ch.ti.ifonte.customer.CustomerRegistrationRequest;
+import ch.ti.ifonte.customer.CustomerUpdateRequest;
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
 import org.junit.jupiter.api.Test;
@@ -21,32 +21,32 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-public class EmployerIntegrationTest {
+public class CustomerIntegrationTest {
 
     @Autowired
     private WebTestClient webTestClient;
-    private static final String EMPLOYER_PATH = "/api/v1/employers";
+    private static final String CUSTOMER_PATH = "/api/v1/customers";
 
 
     @Test
-    void canRegisterAEmployer() {
+    void canRegisterACustomer() {
         // Create registration request
         Faker faker = new Faker();
         Name fakerName = faker.name();
         String name = fakerName.firstName();
         String lastname = fakerName.lastName();
         String email = name + "." + lastname + "-" + UUID.randomUUID() +  "@testexample.com";
-        EmployerRegistrationRequest employerRegistrationRequest = new EmployerRegistrationRequest(
+        CustomerRegistrationRequest customerRegistrationRequest = new CustomerRegistrationRequest(
                 name,
                 email,
                 "password");
         // send post request
 
         String jwtToken = webTestClient.post()
-                .uri(EMPLOYER_PATH)
+                .uri(CUSTOMER_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(employerRegistrationRequest), EmployerRegistrationRequest.class)
+                .body(Mono.just(customerRegistrationRequest), CustomerRegistrationRequest.class)
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -55,27 +55,27 @@ public class EmployerIntegrationTest {
                 .get(AUTHORIZATION)
                 .get(0);
 
-        // get all employer
-        List<EmployerDTO> allEmployers = webTestClient.get()
-                .uri(EMPLOYER_PATH)
+        // get all Customer
+        List<CustomerDTO> allCustomers = webTestClient.get()
+                .uri(CUSTOMER_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk()
-                .expectBodyList(new ParameterizedTypeReference<EmployerDTO>() {})
+                .expectBodyList(new ParameterizedTypeReference<CustomerDTO>() {})
                 .returnResult()
                 .getResponseBody();
 
 
-        var id = allEmployers.stream()
-                .filter(employer -> employer.email().equals(email))
-                .map(EmployerDTO::id)
+        var id = allCustomers.stream()
+                .filter(customer -> customer.email().equals(email))
+                .map(CustomerDTO::id)
                 .findFirst()
                 .orElseThrow();
 
-        // make sure employer is present
-        EmployerDTO expectedEmployer = new EmployerDTO(
+        // make sure customer is present
+        CustomerDTO expectedCustomer = new CustomerDTO(
                 id,
                 name,
                 email,
@@ -85,54 +85,54 @@ public class EmployerIntegrationTest {
 
 
 
-        assertThat(allEmployers).contains(expectedEmployer);
+        assertThat(allCustomers).contains(expectedCustomer);
 
-        // get employer by id
+        // get customer by id
         webTestClient.get()
-                .uri(EMPLOYER_PATH + "/{id}", id)
+                .uri(CUSTOMER_PATH + "/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
                 .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk()
-                .expectBody(new ParameterizedTypeReference<EmployerDTO>() {})
-                .isEqualTo(expectedEmployer);
+                .expectBody(new ParameterizedTypeReference<CustomerDTO>() {})
+                .isEqualTo(expectedCustomer);
     }
 
     @Test
-    void canDeleteEmployer() {
+    void canDeleteCustomer() {
         // Create registration request
         Faker faker = new Faker();
         Name fakerName = faker.name();
         String name = fakerName.firstName();
         String lastname = fakerName.lastName();
         String email = name + "." + lastname + "-" + UUID.randomUUID() +  "@testexample.com";
-        EmployerRegistrationRequest employerRegistrationRequest = new EmployerRegistrationRequest(
+        CustomerRegistrationRequest customerRegistrationRequest = new CustomerRegistrationRequest(
                 name,
                 email,
                 "password");
 
-        EmployerRegistrationRequest employerRegistrationRequest2 = new EmployerRegistrationRequest(
+        CustomerRegistrationRequest customerRegistrationRequest2 = new CustomerRegistrationRequest(
                 name,
                 email + ".ch",
                 "password");
 
-        // create a employer to delete
+        // create a customer to delete
         webTestClient.post()
-                .uri(EMPLOYER_PATH)
+                .uri(CUSTOMER_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(employerRegistrationRequest), EmployerRegistrationRequest.class)
+                .body(Mono.just(customerRegistrationRequest), CustomerRegistrationRequest.class)
                 .exchange()
                 .expectStatus()
                 .isOk();
 
-        // send post request to create employer that will delete the previous one
+        // send post request to create Customer that will delete the previous one
         String jwtToken = webTestClient.post()
-                .uri(EMPLOYER_PATH)
+                .uri(CUSTOMER_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(employerRegistrationRequest2), EmployerRegistrationRequest.class)
+                .body(Mono.just(customerRegistrationRequest2), CustomerRegistrationRequest.class)
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -141,36 +141,36 @@ public class EmployerIntegrationTest {
                 .get(AUTHORIZATION)
                 .get(0);
 
-        // get all employer
-        List<EmployerDTO> allEmployers = webTestClient.get()
-                .uri(EMPLOYER_PATH)
+        // get all Customer
+        List<CustomerDTO> allCustomers = webTestClient.get()
+                .uri(CUSTOMER_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk()
-                .expectBodyList(new ParameterizedTypeReference<EmployerDTO>() {})
+                .expectBodyList(new ParameterizedTypeReference<CustomerDTO>() {})
                 .returnResult()
                 .getResponseBody();
 
-        var id = allEmployers.stream()
-                .filter(employer -> employer.email().equals(email))
-                .map(EmployerDTO::id)
+        var id = allCustomers.stream()
+                .filter(customer -> customer.email().equals(email))
+                .map(CustomerDTO::id)
                 .findFirst()
                 .orElseThrow();
 
-        // employer 2 deletes employer 1
+        // customer 2 deletes customer 1
         webTestClient.delete()
-                .uri(EMPLOYER_PATH + "/{id}", id)
+                .uri(CUSTOMER_PATH + "/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
                 .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk();
 
-        // employer 2 gets employer by id
+        // customer 2 gets customer by id
         webTestClient.get()
-                .uri(EMPLOYER_PATH + "/{id}", id)
+                .uri(CUSTOMER_PATH + "/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
                 .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
                 .exchange()
@@ -186,17 +186,17 @@ public class EmployerIntegrationTest {
         String name = fakerName.firstName();
         String lastname = fakerName.lastName();
         String email = name + "." + lastname + "-" + UUID.randomUUID() +  "@testexample.com";
-        EmployerRegistrationRequest employerRegistrationRequest = new EmployerRegistrationRequest(
+        CustomerRegistrationRequest customerRegistrationRequest = new CustomerRegistrationRequest(
                 name,
                 email,
                 "password");
         // send post request
 
         String jwtToken = webTestClient.post()
-                .uri(EMPLOYER_PATH)
+                .uri(CUSTOMER_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(employerRegistrationRequest), EmployerRegistrationRequest.class)
+                .body(Mono.just(customerRegistrationRequest), CustomerRegistrationRequest.class)
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -204,56 +204,56 @@ public class EmployerIntegrationTest {
                 .getResponseHeaders()
                 .get(AUTHORIZATION)
                 .get(0);
-        // get all employer
-        List<EmployerDTO> allEmployers = webTestClient.get()
-                .uri(EMPLOYER_PATH)
+        // get all Customer
+        List<CustomerDTO> allCustomers = webTestClient.get()
+                .uri(CUSTOMER_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk()
-                .expectBodyList(new ParameterizedTypeReference<EmployerDTO>() {})
+                .expectBodyList(new ParameterizedTypeReference<CustomerDTO>() {})
                 .returnResult()
                 .getResponseBody();
 
-        var id = allEmployers.stream()
-                .filter(employer -> employer.email().equals(email))
-                .map(EmployerDTO::id)
+        var id = allCustomers.stream()
+                .filter(customer -> customer.email().equals(email))
+                .map(CustomerDTO::id)
                 .findFirst()
                 .orElseThrow();
 
-        // update employer
+        // update customer
         String newName = "bobbie";
-        EmployerUpdateRequest updateRequest = new EmployerUpdateRequest(
+        CustomerUpdateRequest updateRequest = new CustomerUpdateRequest(
                 newName, null
         );
 
         webTestClient.put()
-                .uri(EMPLOYER_PATH + "/{id}", id)
+                .uri(CUSTOMER_PATH + "/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(updateRequest), EmployerUpdateRequest.class)
+                .body(Mono.just(updateRequest), CustomerUpdateRequest.class)
                 .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk();
 
-        // get employer by id
-        EmployerDTO updatedEmployer = webTestClient.get()
-                .uri(EMPLOYER_PATH + "/{id}", id)
+        // get customer by id
+        CustomerDTO updatedCustomer = webTestClient.get()
+                .uri(CUSTOMER_PATH + "/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
                 .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk()
-                .expectBody(EmployerDTO.class)
+                .expectBody(CustomerDTO.class)
                 .returnResult()
                 .getResponseBody();
 
-        EmployerDTO expected = new EmployerDTO(
+        CustomerDTO expected = new CustomerDTO(
                 id, newName, email, List.of("ROLE_USER"), email
         );
 
-        assertThat(updatedEmployer).isEqualTo(expected);
+        assertThat(updatedCustomer).isEqualTo(expected);
     }
 }

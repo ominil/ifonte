@@ -1,4 +1,4 @@
-package ch.ti.ifonte.employer;
+package ch.ti.ifonte.customer;
 
 
 import jakarta.persistence.*;
@@ -18,25 +18,25 @@ import java.util.List;
 @EqualsAndHashCode
 @Entity
 @Table(
-        name = "employer",
+        name = "customer",
         uniqueConstraints = {
                 @UniqueConstraint(
-                        name = "employer_email_unique",
+                        name = "customer_email_unique",
                         columnNames = "email"
                 )
         }
 )
-public class Employer implements UserDetails {
+public class Customer implements UserDetails {
 
     @Id
     @SequenceGenerator(
-            name = "employer_id_seq",
-            sequenceName = "employer_id_seq",
+            name = "customer_id_seq",
+            sequenceName = "customer_id_seq",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "employer_id_seq"
+            generator = "customer_id_seq"
     )
     private Integer id;
     @Column(
@@ -53,7 +53,7 @@ public class Employer implements UserDetails {
     )
     private String password;
 
-    public Employer(String name, String email, String password) {
+    public Customer(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;

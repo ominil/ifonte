@@ -35,6 +35,7 @@ services:
     image: ifonte/ifonte-api
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ifonte
+      JWT_SECURITY_TOKEN: ${JWT_SECURITY_TOKEN}
     ports:
       - "8088:8080"
     networks:

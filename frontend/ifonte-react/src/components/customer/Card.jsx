@@ -15,11 +15,11 @@ import {
     AlertDialog,
     AlertDialogBody, AlertDialogFooter,
 } from '@chakra-ui/react';
-import {deleteEmployer} from "../services/client.js";
-import {errorNotification, successNotification} from "../services/notification.js";
-import UpdateEmployerDrawer from "./UpdateEmployerDrawer.jsx";
+import {deleteCustomer} from "../../services/client.js";
+import {errorNotification, successNotification} from "../../services/notification.js";
+import UpdateCustomerDrawer from "./UpdateCustomerDrawer.jsx";
 
-const Card = ({id, name, email, fetchEmployers}) => {
+const Card = ({id, name, email, fetchCustomers}) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
     const cancelRef = useRef()
@@ -47,10 +47,10 @@ const Card = ({id, name, email, fetchEmployers}) => {
                 </Box>
                 <Stack direction={'row'} justify={'center'} spacing={6} p={4}>
                     <Stack>
-                        <UpdateEmployerDrawer
+                        <UpdateCustomerDrawer
                             initialValue={{name, email}}
-                            employerId={id}
-                            fetchEmployers={fetchEmployers}
+                            customerId={id}
+                            fetchCustomers={fetchCustomers}
                         />
                     </Stack>
                     <Stack >
@@ -77,7 +77,7 @@ const Card = ({id, name, email, fetchEmployers}) => {
                             <AlertDialogOverlay>
                                 <AlertDialogContent>
                                     <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                                        Delete Employer
+                                        Delete Customer
                                     </AlertDialogHeader>
 
                                     <AlertDialogBody>
@@ -89,12 +89,12 @@ const Card = ({id, name, email, fetchEmployers}) => {
                                             Cancel
                                         </Button>
                                         <Button colorScheme='red' onClick={() => {
-                                            deleteEmployer(id).then(() => {
+                                            deleteCustomer(id).then(() => {
                                                 successNotification(
-                                                    'Employer Deleted',
+                                                    'Customer Deleted',
                                                     `${name} was successfully deleted`
                                                 )
-                                                fetchEmployers()
+                                                fetchCustomers()
                                             }).catch(err => {
                                                 console.log(err)
                                                 errorNotification(

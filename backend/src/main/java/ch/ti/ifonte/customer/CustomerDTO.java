@@ -1,8 +1,8 @@
-package ch.ti.ifonte.employer;
+package ch.ti.ifonte.customer;
 
 import java.util.List;
 
-public record EmployerDTO(
+public record CustomerDTO(
         Integer id,
         String name,
         String email,

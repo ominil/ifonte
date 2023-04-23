@@ -1,4 +1,4 @@
-package ch.ti.ifonte.employer;
+package ch.ti.ifonte.customer;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -7,16 +7,16 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EmployerUserDetailsService implements UserDetailsService {
+public class CustomerUserDetailsService implements UserDetailsService {
 
-    private final EmployerDao employerDao;
+    private final CustomerDao customerDao;
 
-    public EmployerUserDetailsService(@Qualifier("jpa") EmployerDao employerDao) {
-        this.employerDao = employerDao;
+    public CustomerUserDetailsService(@Qualifier("jpa") CustomerDao customerDao) {
+        this.customerDao = customerDao;
     }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return employerDao.selectUserByEmail(username).orElseThrow(
+        return customerDao.selectCustomerByEmail(username).orElseThrow(
                 () -> new UsernameNotFoundException("Username " + username + " not found")
         );
     }

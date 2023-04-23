@@ -32,7 +32,7 @@ public class SecurityFilterChainConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(
                         HttpMethod.POST,
-                        "/api/v1/employers",
+                        "/api/v1/customers",
                         "/api/v1/auth/login"
                 )
                 .permitAll()

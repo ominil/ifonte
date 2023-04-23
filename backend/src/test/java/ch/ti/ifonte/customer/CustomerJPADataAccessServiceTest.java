@@ -1,4 +1,4 @@
-package ch.ti.ifonte.employer;
+package ch.ti.ifonte.customer;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,17 +8,17 @@ import org.mockito.MockitoAnnotations;
 
 import static org.mockito.Mockito.verify;
 
-class EmployerJPADataAccessServiceTest {
+class CustomerJPADataAccessServiceTest {
 
-    private EmployerJPADataAccessService underTest;
+    private CustomerJPADataAccessService underTest;
     @Mock
-    private EmployerRepository employerRepository;
+    private CustomerRepository customerRepository;
     private AutoCloseable autoCloseable;
 
     @BeforeEach
     void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
-        underTest = new EmployerJPADataAccessService(employerRepository);
+        underTest = new CustomerJPADataAccessService(customerRepository);
     }
 
     @AfterEach
@@ -27,50 +27,50 @@ class EmployerJPADataAccessServiceTest {
     }
 
     @Test
-    void selectAllEmployers() {
+    void selectAllCustomers() {
         // When
-        underTest.selectAllEmployers();
+        underTest.selectAllCustomers();
 
         // Then
-        verify(employerRepository)
+        verify(customerRepository)
                 .findAll();
     }
 
     @Test
-    void selectEmployerById() {
+    void selectCustomerById() {
         // Given
         Integer id = 1;
         // When
-        underTest.selectEmployerById(id);
+        underTest.selectCustomerById(id);
 
         // Then
-        verify(employerRepository)
+        verify(customerRepository)
                 .findById(id);
     }
 
     @Test
-    void insertEmployer() {
+    void insertCustomer() {
         // Given
-        Employer employer = new Employer();
+        Customer customer = new Customer();
 
         // When
-        underTest.insertEmployer(employer);
+        underTest.insertCustomer(customer);
 
         // Then
-        verify(employerRepository)
-                .save(employer);
+        verify(customerRepository)
+                .save(customer);
     }
 
     @Test
-    void deleteEmployerById() {
+    void deleteCustomerById() {
         // Given
         Integer id = 1;
 
         // When
-        underTest.deleteEmployerById(id);
+        underTest.deleteCustomerById(id);
 
         // Then
-        verify(employerRepository)
+        verify(customerRepository)
                 .deleteById(id);
     }
 
@@ -80,36 +80,36 @@ class EmployerJPADataAccessServiceTest {
         String email = "example@domain.com";
 
         // When
-        underTest.existPersonWithEmail(email);
+        underTest.existCustomerWithEmail(email);
 
         // Then
-        verify(employerRepository)
-                .existsEmployerByEmail(email);
+        verify(customerRepository)
+                .existsCustomerByEmail(email);
     }
 
     @Test
-    void existEmployerById() {
+    void existCustomerById() {
         // Given
         Integer id = 1;
 
         // When
-        underTest.existEmployerById(id);
+        underTest.existCustomerById(id);
 
         // Then
-        verify(employerRepository)
+        verify(customerRepository)
                 .existsById(id);
     }
 
     @Test
-    void updateEmployer() {
+    void updateCustomer() {
         // Given
-        Employer employer = new Employer();
+        Customer customer = new Customer();
 
         // When
-        underTest.updateEmployer(employer);
+        underTest.updateCustomer(customer);
 
         // Then
-        verify(employerRepository)
-                .save(employer);
+        verify(customerRepository)
+                .save(customer);
     }
 }

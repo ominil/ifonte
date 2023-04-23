@@ -1,4 +1,4 @@
-package ch.ti.ifonte.employer;
+package ch.ti.ifonte.customer;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -7,12 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Component
-public class EmployerRowMapper implements RowMapper<Employer> {
+public class CustomerRowMapper implements RowMapper<Customer> {
 
     @Override
-    public Employer mapRow(ResultSet rs, int rowNum) throws SQLException {
+    public Customer mapRow(ResultSet rs, int rowNum) throws SQLException {
 
-        return Employer.builder()
+        return Customer.builder()
                 .id(rs.getInt("id"))
                 .name(rs.getString("name"))
                 .email(rs.getString("email"))
