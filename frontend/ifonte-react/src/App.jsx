@@ -71,9 +71,9 @@ const App = () => {
 
     return(
         <SimpleSidebar>
-            <CreateCustomerDrawer
-                fetchCustomers={fetchCustomers}
-            ></CreateCustomerDrawer>
+            {/*<CreateCustomerDrawer*/}
+            {/*    fetchCustomers={fetchCustomers}*/}
+            {/*></CreateCustomerDrawer>*/}
             <Wrap spacing={'30px'} justify={'center'}>
                 {customers.map((customer, index) => (
                     <WrapItem key={index}>
