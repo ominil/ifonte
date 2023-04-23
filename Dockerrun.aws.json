@@ -21,7 +21,7 @@
     },
     {
       "name": "ifonte-react",
-      "image": "ifonte/ifonte-react:09.04.2023.17.00.16",
+      "image": "ifonte/ifonte-react:23.04.2023.17.41.38",
       "essential": true,
       "memory": 256,
       "portMappings": [
