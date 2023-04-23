@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "ifonte-api",
-      "image": "ifonte/ifonte-api:15.04.2023.19.59.01",
+      "image": "ifonte/ifonte-api:23.04.2023.17.07.21",
       "essential": true,
       "memory": 512,
       "portMappings": [
