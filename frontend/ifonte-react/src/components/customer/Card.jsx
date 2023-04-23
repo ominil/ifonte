@@ -15,8 +15,8 @@ import {
     AlertDialog,
     AlertDialogBody, AlertDialogFooter,
 } from '@chakra-ui/react';
-import {deleteCustomer} from "../services/client.js";
-import {errorNotification, successNotification} from "../services/notification.js";
+import {deleteCustomer} from "../../services/client.js";
+import {errorNotification, successNotification} from "../../services/notification.js";
 import UpdateCustomerDrawer from "./UpdateCustomerDrawer.jsx";
 
 const Card = ({id, name, email, fetchCustomers}) => {

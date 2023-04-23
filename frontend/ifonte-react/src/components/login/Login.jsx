@@ -14,6 +14,7 @@ import {useAuth} from "../context/AuthContext.jsx";
 import {errorNotification} from "../../services/notification.js";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
+import SignUpForward from "./SignUpForward.jsx";
 
 const MyTextInput = ({ label, isRequired, ...props }) => {
     // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
@@ -51,7 +52,7 @@ const LoginForm = () => {
           initialValues={{username: '', password:''}}
           onSubmit={(values, {setSubmitting}) => {
               setSubmitting(true);
-              performLogin(values).then(res => {
+              performLogin(values).then(() => {
                   navigate('/dashboard');
               }).catch(err => {
                   errorNotification(err.code, err.response.data.message)
@@ -90,6 +91,7 @@ const Login = () => {
                 <Stack spacing={4} w={'full'} maxW={'md'}>
                     <Heading fontSize={'2xl'}>Login to your account</Heading>
                     <LoginForm />
+                    <SignUpForward />
                 </Stack>
             </Flex>
             <Flex flex={1}>

@@ -8,6 +8,7 @@ import AuthProvider from "./components/context/AuthContext.jsx";
 import Login from "./components/login/Login.jsx";
 import ProtectedRoute from "./components/shared/ProtectedRoute.jsx";
 import './index.css'
+import SignUp from "./components/login/SignUp.jsx";
 
 
 const { ToastContainer } = createStandaloneToast()
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
     {
         path: '/',
         element: <Login />
+    },
+    {
+        path: '/signup',
+        element: <SignUp/>
     },
     {
         path: '/dashboard',
