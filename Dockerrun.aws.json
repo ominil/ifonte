@@ -8,26 +8,14 @@
       "memory": 512,
       "portMappings": [
         {
-          "hostPort": 8080,
+          "hostPort": 80,
           "containerPort": 8080
         }
       ],
       "environment": [
         {
           "name": "SPRING_DATASOURCE_URL",
-          "value": "jdbc:postgresql://awseb-e-nyjn3m9uub-stack-awsebrdsdatabase-74c2lyhhjrst.cbkh5vcuw6hp.eu-north-1.rds.amazonaws.com:5432/ifonte"
-        }
-      ]
-    },
-    {
-      "name": "ifonte-react",
-      "image": "ifonte/ifonte-react:23.04.2023.17.41.38",
-      "essential": true,
-      "memory": 256,
-      "portMappings": [
-        {
-          "hostPort": 80,
-          "containerPort": 5173
+          "value": "jdbc:postgresql://awseb-e-kxtmigkz22-stack-awsebrdsdatabase-5dxctvtrqud7.cbkh5vcuw6hp.eu-north-1.rds.amazonaws.com:5432/ebdb"
         }
       ]
     }
