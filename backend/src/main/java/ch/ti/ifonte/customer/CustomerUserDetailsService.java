@@ -11,7 +11,7 @@ public class CustomerUserDetailsService implements UserDetailsService {
 
     private final CustomerDao customerDao;
 
-    public CustomerUserDetailsService(@Qualifier("jpa") CustomerDao customerDao) {
+    public CustomerUserDetailsService(@Qualifier("customer_jpa") CustomerDao customerDao) {
         this.customerDao = customerDao;
     }
     @Override

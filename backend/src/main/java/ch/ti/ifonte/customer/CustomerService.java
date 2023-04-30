@@ -3,23 +3,28 @@ package ch.ti.ifonte.customer;
 import ch.ti.ifonte.exception.DuplicateResourceException;
 import ch.ti.ifonte.exception.RequestValidationException;
 import ch.ti.ifonte.exception.ResourceNotFoundException;
+import ch.ti.ifonte.roles.Role;
+import ch.ti.ifonte.roles.RoleService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class CustomerService {
 
     private final CustomerDao customerDao;
+    private final RoleService roleService;
 
     private final PasswordEncoder passwordEncoder;
     private final CustomerDTOMapper customerDTOMapper;
 
-    public CustomerService(@Qualifier("jpa") CustomerDao customerDao, PasswordEncoder passwordEncoder, CustomerDTOMapper customerDTOMapper) {
+    public CustomerService(@Qualifier("customer_jpa") CustomerDao customerDao, RoleService roleService, PasswordEncoder passwordEncoder, CustomerDTOMapper customerDTOMapper) {
         this.customerDao = customerDao;
+        this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
         this.customerDTOMapper = customerDTOMapper;
     }
@@ -47,11 +52,14 @@ public class CustomerService {
             );
         }
 
+        Role roleUser = roleService.selectRoleByName("ROLE_USER");
+
         // add customer
         Customer customer = Customer.builder()
                 .email(customerRegistrationRequest.email())
                 .name(customerRegistrationRequest.name())
                 .password(passwordEncoder.encode(customerRegistrationRequest.password()))
+                .roles(Set.of(roleUser))
                 .build();
 
         customerDao.insertCustomer(customer);

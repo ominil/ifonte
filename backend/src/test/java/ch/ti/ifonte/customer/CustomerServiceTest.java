@@ -3,6 +3,7 @@ package ch.ti.ifonte.customer;
 import ch.ti.ifonte.exception.DuplicateResourceException;
 import ch.ti.ifonte.exception.RequestValidationException;
 import ch.ti.ifonte.exception.ResourceNotFoundException;
+import ch.ti.ifonte.roles.RoleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +23,9 @@ class CustomerServiceTest {
     private CustomerService underTest;
 
     @Mock
+    private RoleService roleService;
+
+    @Mock
     private CustomerDao customerDao;
 
     @Mock
@@ -31,7 +35,7 @@ class CustomerServiceTest {
 
     @BeforeEach
     void setUp() {
-        underTest = new CustomerService(customerDao, passwordEncoder, customerDTOMapper);
+        underTest = new CustomerService(customerDao, roleService, passwordEncoder, customerDTOMapper);
     }
 
     @Test

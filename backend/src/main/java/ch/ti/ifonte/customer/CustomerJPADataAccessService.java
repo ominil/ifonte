@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-@Repository("jpa")
+@Repository("customer_jpa")
 @AllArgsConstructor
 public class CustomerJPADataAccessService implements CustomerDao {
 
