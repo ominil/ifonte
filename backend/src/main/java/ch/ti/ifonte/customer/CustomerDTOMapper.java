@@ -18,7 +18,11 @@ public class CustomerDTOMapper implements Function<Customer, CustomerDTO> {
                         .stream()
                         .map(GrantedAuthority::getAuthority)
                         .collect(Collectors.toList()),
-                customer.getUsername()
+                customer.getUsername(),
+                customer.isEnabled(),
+                customer.isAccountNonExpired(),
+                customer.isAccountNonLocked(),
+                customer.isCredentialsNonExpired()
         );
     }
 }

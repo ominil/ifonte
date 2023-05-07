@@ -60,6 +60,11 @@ public class CustomerService {
                 .name(customerRegistrationRequest.name())
                 .password(passwordEncoder.encode(customerRegistrationRequest.password()))
                 .roles(Set.of(roleUser))
+                .isAccountNonExpired(true)
+                .isAccountNonLocked(true)
+                .isCredentialsNonExpired(true)
+                // TODO change when authentication with email
+                .enabled(true)
                 .build();
 
         customerDao.insertCustomer(customer);
@@ -73,7 +78,6 @@ public class CustomerService {
                     "Customer with id [%s] not found".formatted(customerId)
             );
         }
-
         customerDao.deleteCustomerById(customerId);
     }
 
@@ -100,6 +104,32 @@ public class CustomerService {
             }
 
             customer.setEmail(customerUpdateRequest.email());
+            changes = true;
+        }
+
+        if (!changes) {
+            throw new RequestValidationException("No changes detected");
+        }
+
+        customerDao.updateCustomer(customer);
+    }
+
+    public void updateCustomerUserDetails(Integer customerId, CustomerUserDetailsUpdate customerUserDetailsUpdate) {
+        Customer customer = customerDao.selectCustomerById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                                "Customer with id [%s] not found".formatted(customerId)
+                        )
+                );
+
+        boolean changes = false;
+
+        if (customerUserDetailsUpdate.accountNonLocked() != customer.isAccountNonLocked()) {
+            customer.setAccountNonLocked(customerUserDetailsUpdate.accountNonLocked());
+            changes = true;
+        }
+
+        if (customerUserDetailsUpdate.roles() != null && !customerUserDetailsUpdate.roles().equals(customer.getRoles())) {
+            customer.setRoles(customerUserDetailsUpdate.roles());
             changes = true;
         }
 

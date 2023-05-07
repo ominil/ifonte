@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     IconButton,
-    Avatar,
     Box,
     CloseButton,
     Flex,
@@ -22,22 +21,17 @@ import {
 } from '@chakra-ui/react';
 import {
     FiHome,
-    FiTrendingUp,
-    FiCompass,
-    FiStar,
-    FiSettings,
+    FiUser,
     FiMenu,
-    FiBell,
     FiChevronDown,
 } from 'react-icons/fi';
 import {useAuth} from "../context/AuthContext.jsx";
+import {basicPermission, adminPermission} from "../../services/permission.js";
 
 const LinkItems = [
-    { name: 'Home', icon: FiHome },
-    { name: 'Trending', icon: FiTrendingUp },
-    { name: 'Explore', icon: FiCompass },
-    { name: 'Favourites', icon: FiStar },
-    { name: 'Settings', icon: FiSettings },
+    { name: 'Home', icon: FiHome, navTo: "/", permission: basicPermission},
+    // { name: 'Settings', icon: FiSettings, navTo: "/user/settings"},
+    { name: 'admin', icon: FiUser, navTo: "/admin", permission: adminPermission},
 ];
 
 export default function SidebarWithHeader({
@@ -73,6 +67,9 @@ export default function SidebarWithHeader({
 
 
 const SidebarContent = ({ onClose, ...rest }) => {
+
+    const { checkUserPermission } = useAuth();
+
     return (
         <Box
             transition="3s ease"
@@ -84,23 +81,25 @@ const SidebarContent = ({ onClose, ...rest }) => {
             h="full"
             {...rest}>
             <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-                <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
+                <Text fontSize="2xl"  fontWeight="bold">
                     iFonte
                 </Text>
                 <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
             </Flex>
             {LinkItems.map((link) => (
-                <NavItem key={link.name} icon={link.icon}>
+                checkUserPermission(link.permission) ?
+                <NavItem key={link.name} icon={link.icon} navTo={link.navTo}>
                     {link.name}
                 </NavItem>
+                : null
             ))}
         </Box>
     );
 };
 
-const NavItem = ({ icon, children, ...rest }) => {
+const NavItem = ({ icon, navTo, children, ...rest }) => {
     return (
-        <Link href="frontend/ifonte-react/src/components/shared#" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+        <Link href={navTo} style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
             <Flex
                 align="center"
                 p="4"
@@ -161,12 +160,6 @@ const MobileNav = ({ onOpen, ...rest }) => {
             </Text>
 
             <HStack spacing={{ base: '0', md: '6' }}>
-                <IconButton
-                    size="lg"
-                    variant="ghost"
-                    aria-label="open menu"
-                    icon={<FiBell />}
-                />
                 <Flex alignItems={'center'}>
                     <Menu>
                         <MenuButton
@@ -174,12 +167,6 @@ const MobileNav = ({ onOpen, ...rest }) => {
                             transition="all 0.3s"
                             _focus={{ boxShadow: 'none' }}>
                             <HStack>
-                                <Avatar
-                                    size={'sm'}
-                                    src={
-                                        'https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-                                    }
-                                />
                                 <VStack
                                     display={{ base: 'none', md: 'flex' }}
                                     alignItems="flex-start"
@@ -204,8 +191,6 @@ const MobileNav = ({ onOpen, ...rest }) => {
                             bg={useColorModeValue('white', 'gray.900')}
                             borderColor={useColorModeValue('gray.200', 'gray.700')}>
                             <MenuItem>Profile</MenuItem>
-                            <MenuItem>Settings</MenuItem>
-                            <MenuItem>Billing</MenuItem>
                             <MenuDivider />
                             <MenuItem
                                 onClick={logout}

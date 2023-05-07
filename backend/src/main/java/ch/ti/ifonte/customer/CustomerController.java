@@ -65,10 +65,25 @@ public class CustomerController {
                     @ApiResponse(responseCode = "404", description = "Bad request", content = @Content),
             }
     )
+    @PutMapping("user-details/{customerId}")
+    public void updateCustomerUserDetails(
+        @PathVariable("customerId") Integer customerId,
+        @RequestBody CustomerUserDetailsUpdate customerUserDetailsUpdate
+    ) {
+        customerService.updateCustomerUserDetails(customerId, customerUserDetailsUpdate);
+    }
+
+    @Operation(summary = "Update customer info")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
+                    @ApiResponse(responseCode = "404", description = "Bad request", content = @Content),
+            }
+    )
     @PutMapping("{customerId}")
     public void updateCustomer(
-        @PathVariable("customerId") Integer customerId,
-        @RequestBody CustomerUpdateRequest customerUpdateRequest
+            @PathVariable("customerId") Integer customerId,
+            @RequestBody CustomerUpdateRequest customerUpdateRequest
     ) {
         customerService.updateCustomer(customerId, customerUpdateRequest);
     }

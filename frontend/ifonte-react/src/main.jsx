@@ -7,15 +7,17 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AuthProvider from "./components/context/AuthContext.jsx";
 import Login from "./components/login/Login.jsx";
 import ProtectedRoute from "./components/shared/ProtectedRoute.jsx";
+import SimpleSidebar from "./components/shared/SideBar.jsx";
 import './index.css'
 import SignUp from "./components/login/SignUp.jsx";
-
+import { adminPermission, basicPermission} from "./services/permission.js";
+import ResourceNotFound from "./components/shared/ResourceNotFound.jsx";
 
 const { ToastContainer } = createStandaloneToast()
 
 const router = createBrowserRouter([
     {
-        path: '/',
+        path: '/login',
         element: <Login />
     },
     {
@@ -23,8 +25,13 @@ const router = createBrowserRouter([
         element: <SignUp/>
     },
     {
-        path: '/dashboard',
-        element: <ProtectedRoute><App /></ProtectedRoute>
+        path: '/admin',
+        element: <ProtectedRoute permissions={adminPermission}><SimpleSidebar><App /></SimpleSidebar></ProtectedRoute>,
+        errorElement: <ResourceNotFound />
+    }, {
+        path: '/',
+        element: <ProtectedRoute permissions={basicPermission}><SimpleSidebar><h1> User panel </h1></SimpleSidebar></ProtectedRoute>,
+        errorElement: <ResourceNotFound />
     }
 ])
 

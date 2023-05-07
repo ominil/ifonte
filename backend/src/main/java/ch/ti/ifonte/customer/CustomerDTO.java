@@ -7,6 +7,10 @@ public record CustomerDTO(
         String name,
         String email,
         List<String> roles,
-        String username
+        String username,
+        boolean enabled,
+        boolean isAccountNonExpired,
+        boolean isAccountNonLocked,
+        boolean isCredentialsNonExpired
 ) {
 }

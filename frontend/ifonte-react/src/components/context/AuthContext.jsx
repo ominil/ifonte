@@ -61,13 +61,28 @@ const AuthProvider = ({ children }) => {
         return true;
     }
 
+    const checkUserPermission = (permissions) => {
+        const token = localStorage.getItem('access_token');
+
+        if (!token) {
+            return false;
+        }
+
+        const {scopes: roles} = jwtDecode(token);
+
+        return  permissions.some(permission => {
+            return roles.includes(permission);
+        });
+    }
+
     return (
         <AuthContext.Provider value={{
             customer,
             performLogin,
             logout,
             isUserAuthenticated,
-            setCustomerFromToken
+            setCustomerFromToken,
+            checkUserPermission
         }}>
             {children}
         </AuthContext.Provider>

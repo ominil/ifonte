@@ -32,7 +32,7 @@ public class IFonteApplication {
                     firstname.toLowerCase() + "." + lastname.toLowerCase() + "@example.com",
                     passwordEncoder.encode(UUID.randomUUID().toString()));
             List<Customer> customers = List.of(customer);
-            customerRepository.saveAll(customers);
+//            customerRepository.saveAll(customers);
         };
     }
 }

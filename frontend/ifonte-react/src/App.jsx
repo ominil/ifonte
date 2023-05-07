@@ -1,5 +1,4 @@
 import {Wrap, WrapItem, Spinner, Text} from '@chakra-ui/react'
-import SimpleSidebar from "./components/shared/SideBar.jsx";
 import {getCustomers} from "./services/client.js";
 import { useEffect, useState } from "react";
 import Card from "./components/customer/Card.jsx";
@@ -31,7 +30,6 @@ const App = () => {
 
     if (loading) {
         return (
-            <SimpleSidebar>
                 <Spinner
                     thickness='4px'
                     speed='0.65s'
@@ -39,41 +37,36 @@ const App = () => {
                     color='blue.500'
                     size='xl'
                 />
-            </SimpleSidebar>
         )
     }
 
     if (error) {
         return (
-            <SimpleSidebar>
+            <>
                 <CreateCustomerDrawer
                     fetchCustomers={fetchCustomers}
                 >
 
                 </CreateCustomerDrawer>
                 <Text mt={5}>Oooops there was an error</Text>
-            </SimpleSidebar>
+            </>
         )
     }
 
     if (customers.length <= 0) {
         return (
-            <SimpleSidebar>
+            <>
                 <CreateCustomerDrawer
                     fetchCustomers={fetchCustomers}
                 >
 
                 </CreateCustomerDrawer>
                 <Text mt={5}>No customers available</Text>
-            </SimpleSidebar>
+            </>
         )
     }
 
     return(
-        <SimpleSidebar>
-            {/*<CreateCustomerDrawer*/}
-            {/*    fetchCustomers={fetchCustomers}*/}
-            {/*></CreateCustomerDrawer>*/}
             <Wrap spacing={'30px'} justify={'center'}>
                 {customers.map((customer, index) => (
                     <WrapItem key={index}>
@@ -84,8 +77,6 @@ const App = () => {
                     </WrapItem>
                 ))}
             </Wrap>
-        </SimpleSidebar>
-
     )
 }
 

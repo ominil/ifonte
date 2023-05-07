@@ -57,8 +57,17 @@ public class Customer implements UserDetails {
     @Column
     private boolean enabled;
 
+    @Column(name = "is_account_non_expired")
+    private boolean isAccountNonExpired;
+
+    @Column(name = "is_account_non_locked")
+    private boolean isAccountNonLocked;
+
+    @Column(name = "is_credentials_non_expired")
+    private boolean isCredentialsNonExpired;
+
     @Column
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "customer_roles",
             joinColumns = @JoinColumn(name = "customer_id"),
@@ -91,21 +100,21 @@ public class Customer implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return this.isAccountNonExpired;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return this.isAccountNonLocked;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return this.isCredentialsNonExpired;
     }
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return this.enabled;
     }
 }
